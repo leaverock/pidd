@@ -84,14 +84,14 @@ class Binary(http.Controller):
                 [u'Надзорный орган', _v1_08_SELECTION_DICT[rep.v1_08]],
                 [u'Административное наказание', nak_5],                                                 # 5 строка
                 [u'Номер статьи административного правонарушения', num_stat_6],                         # 6 строка
-                [u'Регламентация (содержание нарушения)', rep.act_problematica.name_get()[0][1]],       # 7 строка
+                [u'Регламентация (содержание нарушения)', rep.act_problematica.name_get()[0][1] if rep.act_problematica else ''],       # 7 строка
                 [u'Сумма предъявленного штрафа, руб.', summa_8],                                        # 8 строка
                 [u'Текущее состояние ведения претензионной работы', rep.get_pret_state()],              # 9 строка
                 [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
                 [u'№ документа', numb_11],                                                              # 11 строка
                 [u'Дата документа', date_12],                                                           # 12 строка
                 [u'Наименование документа', name_13],                                                   # 13 строка
-                [u'Постановляющая часть', rep.postanovlenie_description],                               # 14 строка
+                [u'Постановляющая часть', rep.postanovlenie_description if rep.postanovlenie_description else ''],                               # 14 строка
                 [u'№, дата ЕАСД', rep.postanovlenie_num_easd  if rep.postanovlenie_num_easd else '' + ', '
                  + rep.postanovlenie_date_easd if rep.postanovlenie_date_easd else ''],     # 15 строка
             ]
