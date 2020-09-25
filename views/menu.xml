@@ -1,0 +1,21 @@
+<openerp>
+  	<data>
+		<menuitem
+		    id="m_pid"
+		    name="ПИД"
+			sequence="16"
+			/>
+		<menuitem
+		    id="m_enter_pid"
+		    name="Претензионно-исковая деятельность"
+			action="eco_pid_action"
+			parent="m_pid"
+			/>
+		<menuitem
+		    id="m_docs_refs_problematics"
+		    name="Проблематика ПИД"
+		    parent="eco.m_docs_refs"
+		    action="menu_action_ref_problematics_action"
+			/>
+  	</data>
+</openerp>

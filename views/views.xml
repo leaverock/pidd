@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <!--
+    Справочник «Проблематика ПИД»
+    -->
+    <record id="menu_action_ref_problematics_action" model="ir.actions.act_window">
+        <field name="name">Проблематика ПИД</field>
+        <field name="res_model">eco.pret_isk.problems</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="eco_pid_problems_view_tree" model="ir.ui.view">
+        <field name="name">eco.pret_isk.problems.view.tree</field>
+        <field name="model">eco.pret_isk.problems</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" invisible="1"/>
+                <field name="v0_01"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="eco_pid_problems_view_form" model="ir.ui.view">
+        <field name="name">eco.pret_isk.problems.view.form</field>
+        <field name="model">eco.pret_isk.problems</field>
+        <field name="arch" type="xml">
+            <form string="Претензионно-исковая деятельность">
+                <sheet>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="v0_01"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--
+    Формы Претензионно-исковой деятельности
+    -->
+    <record id="eco_pid_action" model="ir.actions.act_window">
+        <field name="name">Претензионно-исковая деятельность</field>
+        <field name="res_model">eco.pret_isk</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="eco_pid_view_tree" model="ir.ui.view">
+        <field name="name">eco.pret_isk.view.tree</field>
+        <field name="model">eco.pret_isk</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--
+                <field name="v01_04" string="Организация"/>
+                <field name="v01_06" string="Адрес"/>
+                <field name="v01_01" string="Год"/>
+                <field name="v01_03" string="Куда предоставляется"/>
+
+                <field name="create_uid" string="ФИО создателя"/>
+                <field name="write_uid" string="ФИО отправителя"/>
+                <field name="create_date" string="дата создания"/>
+                <field name="write_date" string="дата измененения"/>
+                -->
+                <field name="create_uid" string="ФИО создателя"/>
+                <field name="write_uid" string="ФИО отправителя"/>
+                <field name="create_date" string="дата создания"/>
+                <field name="write_date" string="дата измененения"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="eco_pid_view_form" model="ir.ui.view">
+        <field name="name">eco.pret_isk.view.form</field>
+        <field name="model">eco.pret_isk</field>
+        <field name="arch" type="xml">
+            <form string="Претензионно-исковая деятельность">
+                <field name="tab1_done" invisible="1"/>
+                <field name="tab2_done" invisible="1"/>
+                <field name="tab3_done" invisible="1"/>
+                <field name="tab4_done" invisible="1"/>
+                <field name="can_see_unlock_tab1" invisible="1"/>
+                <field name="can_see_unlock_tab2" invisible="1"/>
+                <field name="can_see_unlock_tab3" invisible="1"/>
+                <field name="can_see_unlock_tab4" invisible="1"/>
+                <notebook>
+
+                    <page string="1. Основные сведения">
+                        <button string="Заблокировать" type="object" name="set_tab_done" args="'1'"
+                                attrs="{'invisible':[('tab1_done','=',True)]}"
+                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                        <button string="Разблокировать" type="object" name="set_tab_done" args="'1'"
+                                attrs="{'invisible':['|', ('can_see_unlock_tab1','=',False), ('tab1_done','=',False)]}"
+                                confirm="Уверены, что хотите разблокировать эту вкладку?"/>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="v1_01" attrs="{'readonly': [('tab1_done','=',True)]}">
+                                <tree>
+                                    <!--
+                                    <field name="short_name" string="Предприятие"/>
+                                    -->
+                                    <field name="name" string="Предприятие"/>
+                                    <field name="rel_railway_id" string="Полигон"/>
+                                </tree>
+                            </field>
+                            <field name="v1_02" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_03" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_04" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_05" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_06" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_07" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_08" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_09" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_10" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                            <field name="v1_11" attrs="{'readonly': [('tab1_done','=',True)]}"/>
+                        </group>
+                    </page>
+
+                    <page string="2. Проблематика">
+                        <button string="Заблокировать" type="object" name="set_tab_done" args="'2'"
+                                attrs="{'invisible':[('tab2_done','=',True)]}"
+                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                        <button string="Разблокировать" type="object" name="set_tab_done" args="'2'"
+                                attrs="{'invisible':['|', ('can_see_unlock_tab2','=',False), ('tab2_done','=',False)]}"
+                                confirm="Уверены, что хотите разблокировать эту вкладку?"/>
+                        <group col="3">
+                            <field name="akt_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_file" filename="akt_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                        </group>
+                        <group col="6">
+                            <field name="akt_date" required="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_num" required="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_has_narush" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                        </group>
+                        <hr/>
+                        <group attrs="{'invisible':[('akt_has_narush','=',False)]}" col="3">
+                            <field name="act_problematica" colspan="3" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_ustranenie_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_ustranenie_file" filename="akt_ustranenie_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <group attrs="{'invisible':[('akt_ustranenie_file','=',False)]}" colspan="3" col="3">
+                                <field name="akt_vozrazhenie_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                <field name="akt_vozrazhenie_file" filename="akt_vozrazhenie_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                <!--
+                                <group attrs="{'invisible':[('akt_vozrazhenie_file','!=',False)]}" colspan="3" string="Пункты предписания">
+                                -->
+                                <group colspan="3" string="Пункты предписания">
+                                    <field name="akt_ustranenie_item_ids" nolabel="1" colspan="2" attrs="{'readonly': [('tab2_done','=',True)]}">
+                                        <tree editable="bottom">
+                                            <field name="num"/>
+                                            <field name="name"/>
+                                            <field name="deadline"/>
+                                        </tree>
+                                    </field>
+                                    <field name="akt_is_accepted" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                    <group attrs="{'invisible':[('akt_is_accepted','=','2')]}" col="3" colspan="2">
+                                        <field name="akt_ustranenie_exec_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                        <field name="akt_ustranenie_exec_file" filename="akt_ustranenie_exec_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                    </group>
+                                    <group attrs="{'invisible':[('akt_is_accepted','=','1')]}" col="1" colspan="2">
+                                        <field name="akt_predpisanie_state" widget="radio" options="{'horizontal': true}" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                        <group attrs="{'invisible':[('akt_predpisanie_state','=','2')]}" col="3">
+                                            <field name="akt_predpisanie_cancel_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                            <field name="akt_predpisanie_cancel_file" filename="akt_predpisanie_cancel_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                        </group>
+                                        <group attrs="{'invisible':[('akt_predpisanie_state','=','1')]}" col="3">
+                                            <field name="akt_predpisanie_exec_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                            <field name="akt_predpisanie_exec_file" filename="akt_predpisanie_exec_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                                        </group>
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="3. Протокол">
+                        <button string="Заблокировать" type="object" name="set_tab_done" args="'3'"
+                                attrs="{'invisible':[('tab3_done','=',True)]}"
+                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                        <button string="Разблокировать" type="object" name="set_tab_done" args="'3'"
+                                attrs="{'invisible':['|', ('can_see_unlock_tab3','=',False), ('tab3_done','=',False)]}"
+                                confirm="Уверены, что хотите разблокировать эту вкладку?"/>
+                        <group>
+                            <group col="3" colspan="2">
+                                <field name="protokol_filename" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                <field name="protokol_file" filename="protokol_filename" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                            </group>
+                            <group attrs="{'invisible':[('protokol_file','=',False)]}">
+                                <field name="protokol_zakon" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                <group string="Краткая суть" colspan="2">
+                                    <field name="protokol_description" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('protokol_zakon','=','2')]}" colspan="2">
+                                    <group colspan="1">
+                                        <field name="protokol_iskodex_1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_iskodex_2" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_iskodex_3" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_iskodex_4" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                    <group colspan="1">
+                                        <field name="protokol_iskodex_5" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_iskodex_6" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_iskodex_7" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                </group>
+                                <group attrs="{'invisible':[('protokol_zakon','=','1')]}" colspan="2">
+                                    <field name="protokol_notkodex_kind" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_notkodex_num" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_notkodex_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_notkodex_summa" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_notkodex_date" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                </group>
+                                <hr colspan="2"/>
+                                <!--
+                        protokol_is_accepted = fields.Selection([('1', u'Принято к исполнению'), ('2', u'Обжалование и отмена'),
+                                             ('3', u'Обжалование и выполнение'),], default="1")
+                                -->
+                                <field name="protokol_is_accepted" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                <group attrs="{'invisible':[('protokol_is_accepted','!=','1')]}" col="3" colspan="2">
+                                    <field name="protokol_exec_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_exec_file" filename="protokol_exec_name" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('protokol_is_accepted','!=','2')]}" col="3" colspan="2">
+                                    <field name="protokol_cancel_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_cancel_file" filename="protokol_cancel_name" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('protokol_is_accepted','!=','3')]}" col="3" colspan="2">
+                                    <field name="protokol_obj_exec_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    <field name="protokol_obj_exec_file" filename="protokol_obj_exec_name" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                </group>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="4. Постановление">
+                        <button string="Заблокировать" type="object" name="set_tab_done" args="'4'"
+                                attrs="{'invisible':[('tab4_done','=',True)]}"
+                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                        <button string="Разблокировать" type="object" name="set_tab_done" args="'4'"
+                                attrs="{'invisible':['|', ('can_see_unlock_tab4','=',False), ('tab4_done','=',False)]}"
+                                confirm="Уверены, что хотите разблокировать эту вкладку?"/>
+                        <group>
+                            <group col="3" colspan="2">
+                                <field name="postanovlenie_filename" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                <field name="postanovlenie_file" filename="postanovlenie_filename" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                            </group>
+                            <group attrs="{'invisible':[('postanovlenie_file','=',False)]}">
+                                <field name="postanovlenie_zakon" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                <group string="Краткая суть" colspan="2">
+                                    <field name="postanovlenie_description" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_zakon','=','2')]}" colspan="2">
+                                    <group colspan="1">
+                                        <field name="postanovlenie_iskodex_1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                        <field name="postanovlenie_iskodex_2" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                        <field name="postanovlenie_iskodex_3" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                        <field name="postanovlenie_iskodex_4" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    </group>
+                                    <group colspan="1">
+                                        <field name="postanovlenie_iskodex_5" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                        <field name="postanovlenie_iskodex_6" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    </group>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_zakon','=','1')]}" colspan="2">
+                                    <field name="postanovlenie_notkodex_kind" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_num" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_date" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_summa" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+                                <!--
+                                <field name="postanovlenie_is_accepted" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2"/>
+                                <group attrs="{'invisible':[('postanovlenie_is_accepted','=','2')]}" col="3" colspan="2">
+                                    <field name="postanovlenie_cancel_name"/>
+                                    <field name="postanovlenie_cancel_file" filename="postanovlenie_cancel_name" nolabel="1"/>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_is_accepted','=','1')]}" col="3" colspan="2">
+                                    <field name="postanovlenie_exec_name"/>
+                                    <field name="postanovlenie_exec_file" filename="postanovlenie_exec_name" nolabel="1"/>
+                                </group>
+                                -->
+                                <field name="postanovlenie_is_accepted" widget="radio" options="{'horizontal': true}" nolabel="1" colspan="2" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                <group attrs="{'invisible':[('postanovlenie_is_accepted','!=','1')]}" col="3" colspan="2">
+                                    <field name="postanovlenie_exec_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_exec_file" filename="postanovlenie_exec_name" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_is_accepted','!=','2')]}" col="3" colspan="2">
+                                    <field name="postanovlenie_cancel_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_cancel_file" filename="postanovlenie_cancel_name" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_is_accepted','!=','3')]}" col="3" colspan="2">
+                                    <field name="postanovlenie_obj_exec_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_obj_exec_file" filename="postanovlenie_obj_exec_name" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+
+                                <group string='ЕАСД ОАО "РЖД"' colspan="2" col="4">
+                                    <field name="postanovlenie_num_easd" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_date_easd" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+                            </group>
+                        </group>
+                    </page>
+
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="eco_pid_attached_files_view_tree" model="ir.ui.view">
+        <field name="name">eco.pret_isk.attached_files.view.tree</field>
+        <field name="model">eco.pret_isk.attached_files</field>
+        <field name="arch" type="xml">
+            <tree version="7.0" editable="bottom">
+                <field name="name" invisible="1"/>
+                <field name="file" filename="name"/>
+                <field name="tab" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="eco_pid_attached_files_view_form" model="ir.ui.view">
+        <field name="name">eco.pret_isk.attached_files.view.form</field>
+        <field name="model">eco.pret_isk.attached_files</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="file" filename="name"/>
+                        <field name="tab" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--
+FROM
+        <record id="eco_proizv_control_export_view" model="ir.ui.view">
+            <field name="name">Экспорт производственного контроля форма</field>
+            <field name="model">eco.proizv.control.export.wz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Экспорт в формат .xlsx" type="object" name="export_excel" class="oe_highlight"/>
+                    </header>
+                    <field name="proizv_control_ids"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="eco_proizv_control_export_act_window"
+                    name="Экспортировать"
+                    src_model="eco.proizv.control"
+                    res_model="eco.proizv.control.export.wz"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
+TO
+      see after
+BY
+eco.proizv.control                      eco.pret_isk
+eco.proizv.control.export.wz            eco.pret_isk.export.wz
+eco_proizv_control_export_act_window    eco_pret_isk_export_act_window
+eco_proizv_control_export_view          eco_pret_isk_export_view
+proizv_control_ids                      pret_isk_ids
+-->
+
+        <record id="eco_pret_isk_export_view" model="ir.ui.view">
+            <field name="name">Экспорт производственного контроля форма</field>
+            <field name="model">eco.pret_isk.export.wz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Экспорт в формат .xlsx" type="object" name="export_excel" class="oe_highlight"/>
+                    </header>
+                    <!-- pret_isk_ids: from wizards-->
+                    <field name="pret_isk_ids"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="eco_pret_isk_export_act_window"
+                    name="Экспортировать"
+                    src_model="eco.pret_isk"
+                    res_model="eco.pret_isk.export.wz"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/>
+
+</data>
+</openerp>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="eco_pid_problems_view_content_0" model="eco.pret_isk.problems">
+            <field name="v0_01">Превышение уровней шума, вибрации и иных физических факторов в результате деятельности железнодорожного транспорта</field>
+        </record>
+        <record id="eco_pid_problems_view_content_1" model="eco.pret_isk.problems">
+            <field name="v0_01">Несоблюдение экологических и санитарно-эпидемиологических требований при обращении с отходами</field>
+        </record>
+        <record id="eco_pid_problems_view_content_2" model="eco.pret_isk.problems">
+            <field name="v0_01">Загрязнение земель нефтепродуктами и другими потенциально опасными веществами (в том числе в результате аварийных разливов)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_3" model="eco.pret_isk.problems">
+            <field name="v0_01">Невнесение в установленные сроки платы за негативное воздействие на окружающую среду (взыскание задолженности)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_4" model="eco.pret_isk.problems">
+            <field name="v0_01">Отсутствие нормативной и разрешительной природоохранной документации (проектов ПДВ, НДС, ПНООЛР, разрешений на выбросы, сбросы, лимитов на размещение отходов)</field>
+        </record>
+        <!--
+        <record id="eco_pid_problems_view_content_" model="eco.pret_isk.problems">
+            <field name="v0_01"> </field>
+        </record>
+        -->
+        <record id="eco_pid_problems_view_content_5" model="eco.pret_isk.problems">
+            <field name="v0_01">Отсутствие проектов санитарно-защитных зон</field>
+        </record>
+        <record id="eco_pid_problems_view_content_6" model="eco.pret_isk.problems">
+            <field name="v0_01">Отсутствие установленных санитарных разрывов для линий железнодорожного транспорта</field>
+        </record>
+        <record id="eco_pid_problems_view_content_7" model="eco.pret_isk.problems">
+            <field name="v0_01">Отсутствие договоров на передачу отходов, лицензий на деятельность по обезвреживанию и размещению отходов I-IV классов опасности у сторонних организаций</field>
+        </record>
+        <record id="eco_pid_problems_view_content_8" model="eco.pret_isk.problems">
+            <field name="v0_01">Превышение нормативов допустимых сбросов при отведении сточных вод в централизованные системы водоотведения (сторонние канализационные сети)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_9" model="eco.pret_isk.problems">
+            <field name="v0_01">Нарушение экологической обстановки в результате сверхнормативных выбросов загрязняющих веществ в атмосферный воздух (запыленность, загазованность)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_10" model="eco.pret_isk.problems">
+            <field name="v0_01">Нарушение правил экологической безопасности в лесах: незаконная рубка, повреждение лесных насаждений или самовольное выкапывание в лесах деревьев, кустарников, лиан; несвоевременная очистка полосы отвода</field>
+        </record>
+        <record id="eco_pid_problems_view_content_11" model="eco.pret_isk.problems">
+            <field name="v0_01">Отсутствие подготовки в области охраны окружающей среды, экологической безопасности, обращения с отходами I-IV классов опасности</field>
+        </record>
+        <record id="eco_pid_problems_view_content_12" model="eco.pret_isk.problems">
+            <field name="v0_01">Нарушение правил охраны водных объектов, которое может повлечь (повлекло) их загрязнение, засорение и (или) истощение, в том числе в результате утечки нефтепродуктов</field>
+        </record>
+        <record id="eco_pid_problems_view_content_13" model="eco.pret_isk.problems">
+            <field name="v0_01">Самовольное занятие водного объекта или пользование им с нарушением установленных условий</field>
+        </record>
+        <record id="eco_pid_problems_view_content_14" model="eco.pret_isk.problems">
+            <field name="v0_01">Сокрытие, умышленное искажение или несвоевременное сообщение экологической информации (отчеты формы 2-ТП, 4-ОС, плата за негативное воздействие на окружающую среду и т.д.)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_15" model="eco.pret_isk.problems">
+            <field name="v0_01">Причинение ущерба животному миру (смертельное травмирование животных)</field>
+        </record>
+        <record id="eco_pid_problems_view_content_16" model="eco.pret_isk.problems">
+            <field name="v0_01">Иное</field>
+        </record>
+    </data>
+</openerp>
