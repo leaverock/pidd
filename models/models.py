@@ -45,7 +45,7 @@ class Pid(models.Model):
     ##############################################################################################################
     v1_01 = fields.Many2many(
         'eco.department',
-        string=u"Предприятия и их полигоны"
+        string=u"Предприятия и их полигоны", required=True
     )
     v1_02 = fields.Text(u'Основание проведения проверки', required=True)
     v1_03 = fields.Selection([("plan_doc", u"Плановая документарная"), ("plan_out", u"Плановая выездная"),

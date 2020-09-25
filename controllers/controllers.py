@@ -48,17 +48,20 @@ class Binary(http.Controller):
                     return dep
 
             if rep.postanovlenie_zakon == '1':          # КОаП РФ
-                stat = u"Ст. №%d, ч. №%d, п. №%d, пп. №%d" % ( rep.postanovlenie_iskodex_1, rep.postanovlenie_iskodex_2,
-                                                               rep.postanovlenie_iskodex_3, rep.postanovlenie_iskodex_4)
+                stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % ( rep.postanovlenie_iskodex_1 if rep.postanovlenie_iskodex_1 else '',
+                                                               rep.postanovlenie_iskodex_2 if rep.postanovlenie_iskodex_2 else '',
+                                                               rep.postanovlenie_iskodex_3 if rep.postanovlenie_iskodex_3 else '',
+                                                               rep.postanovlenie_iskodex_4 if rep.postanovlenie_iskodex_4 else '')
                 if rep.protokol_iskodex_6 > 0.0:
                     nak_5 = u"административный штраф"
                 else:
                     nak_5 = u"-"
-                num_stat_6 = stat + '\n' + rep.protokol_description
-                summa_8 = str(rep.protokol_iskodex_6) + u' руб., ' + str(rep.protokol_iskodex_7)
-                summa_10 = rep.postanovlenie_iskodex_6
+                num_stat_6 = stat + '\n' + rep.protokol_description if rep.protokol_description else ''
+                summa_8 = str(rep.protokol_iskodex_6) if rep.protokol_iskodex_6 else ''\
+                          + u' руб., ' + str(rep.protokol_iskodex_7 if rep.protokol_iskodex_7 else '')
+                summa_10 = rep.postanovlenie_iskodex_6 if rep.postanovlenie_iskodex_6  else ''
                 numb_11 = stat
-                date_12 = rep.postanovlenie_iskodex_5
+                date_12 = rep.postanovlenie_iskodex_5 if rep.postanovlenie_iskodex_5  else ''
                 name_13 = u"Постановление о назначении административного штрафа"
 
             if rep.postanovlenie_zakon == '2':          # Иное законодательство
@@ -66,15 +69,16 @@ class Binary(http.Controller):
                     nak_5 = u"административный штраф"
                 else:
                     nak_5 = u"-"
-                num_stat_6 = u"Иное законадательство" + '\n' +rep.protokol_description
-                summa_8 = str(rep.protokol_notkodex_summa) + u' руб., ' + str(rep.protokol_notkodex_date)
-                summa_10 = rep.postanovlenie_notkodex_summa
-                numb_11 = rep.postanovlenie_notkodex_num
-                date_12 = rep.postanovlenie_notkodex_date
-                name_13 = rep.postanovlenie_notkodex_name
+                num_stat_6 = u"Иное законадательство" + '\n' + rep.protokol_description if rep.protokol_description  else ''
+                summa_8 = str(rep.protokol_notkodex_summa) if rep.protokol_notkodex_summa  else ''\
+                          + u' руб., ' + str(rep.protokol_notkodex_date)  if rep.protokol_notkodex_date  else ''
+                summa_10 = rep.postanovlenie_notkodex_summa  if rep.postanovlenie_notkodex_summa  else ''
+                numb_11 = rep.postanovlenie_notkodex_num if rep.postanovlenie_notkodex_num  else ''
+                date_12 = rep.postanovlenie_notkodex_date if rep.postanovlenie_notkodex_date  else ''
+                name_13 = rep.postanovlenie_notkodex_name if rep.postanovlenie_notkodex_name  else ''
 
             arg = [
-                [u'Принадлежность к железной дороге',  dep_id.rel_railway_id.name_get()[0][1]],
+                [u'Принадлежность к железной дороге',  dep_id.rel_railway_id.name_get()[0][1] if dep_id.rel_railway_id else ''],
                 [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
                 [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
                 [u'Надзорный орган', _v1_08_SELECTION_DICT[rep.v1_08]],
@@ -88,7 +92,8 @@ class Binary(http.Controller):
                 [u'Дата документа', date_12],                                                           # 12 строка
                 [u'Наименование документа', name_13],                                                   # 13 строка
                 [u'Постановляющая часть', rep.postanovlenie_description],                               # 14 строка
-                [u'№, дата ЕАСД', rep.postanovlenie_num_easd + ', ' + rep.postanovlenie_date_easd],     # 15 строка
+                [u'№, дата ЕАСД', rep.postanovlenie_num_easd  if rep.postanovlenie_num_easd else '' + ', '
+                 + rep.postanovlenie_date_easd if rep.postanovlenie_date_easd else ''],     # 15 строка
             ]
             r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 
