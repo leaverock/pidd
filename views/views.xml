@@ -130,8 +130,8 @@
                             <field name="akt_file" filename="akt_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
                         </group>
                         <group col="6">
-                            <field name="akt_date" required="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
-                            <field name="akt_num" required="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_date" attrs="{'readonly': [('tab2_done','=',True)]}"/>
+                            <field name="akt_num" attrs="{'readonly': [('tab2_done','=',True)]}"/>
                             <field name="akt_has_narush" attrs="{'readonly': [('tab2_done','=',True)]}"/>
                         </group>
                         <hr/>

@@ -36,7 +36,18 @@ class Pid(models.Model):
     _name = 'eco.pret_isk'
     _description = u'Претензионно-исковая деятельность'
     name = fields.Char(u"_rec_name", default=u'ПИД')
+    creator_department_id = fields.Many2one('eco.department', related="create_uid.department_id")
     # pret_state = fields.Selection(_PRET_STATE_SELECTION_DICT)
+
+
+    def search(self, cr, uid, domain, *args, **kwargs):
+        '''
+        В журнале у пользователя должны отображаться только отчёты его предприятия и дочерних
+        '''
+        dep_ids = self.pool['eco.department'].search(cr, uid, [])
+        domain += [('creator_department_id', 'in', dep_ids)]
+        res = super(Pid, self).search(cr, uid, domain, *args, **kwargs)
+        return res
 
     ##############################################################################################################
     #
@@ -71,7 +82,7 @@ class Pid(models.Model):
     akt_num = fields.Char(u"Номер акта")
     akt_has_narush = fields.Boolean(u'Есть нарушения')
 
-    act_problematica = fields.Many2one('eco.pret_isk.problems', string=u"Проблематика", required=True)
+    act_problematica = fields.Many2one('eco.pret_isk.problems', string=u"Проблематика")
     akt_ustranenie_file = fields.Binary(u"Предписание об устранении")
     akt_ustranenie_name = fields.Char(u"Предписание об устранении")
 
@@ -237,8 +248,10 @@ class Pid(models.Model):
     @api.multi
     @api.depends('tab1_done','tab2_done','tab3_done','tab4_done')
     def _compute_can_see_unlock_tab(self):
+        dep_ids = self.env['eco.department'].search([])
         for rec in self:
-            if self.env.user.id == 1 or self.env.user.department_id == rec.create_uid.department_id.parent_id or self.env.user == rec.create_uid:
+            if self.env.user.id == 1 or (self.env.user.user_role == 'dep_eng' and rec.create_uid.department_id in dep_ids):
+            # if self.env.user.id == 1 or self.env.user.department_id == rec.create_uid.department_id.parent_id or self.env.user == rec.create_uid:
                 for d in range(1, 5):
                     setattr(rec, 'can_see_unlock_tab%d' % d, getattr(rec, 'tab%d_done' % d))
             else:
