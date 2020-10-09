@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .utils import my_write_merge, my_write, tab1_width, base_fmt_left, tab1_1_cols, font_size, tab1_1_header_height, \
     tab1_2_cols, tab_1_2_vert_shift, tab1_2_header_height, tab1_3_cols, tab1_3_header_height
+from ..util import logFile, log, logInfo
 
 def tab_1_1_head (workbook, worksheet, row, col, width, vert_shift, arg1, arg2, widths):
     fs = font_size

@@ -11,6 +11,14 @@
 			action="eco_pid_action"
 			parent="m_pid"
 			/>
+		<!--
+        <menuitem
+            id="m_enter_pid_export"
+            name="Печать отчёта"
+            parent="m_enter_pid"
+            action="act_pid_export"
+        />
+        -->
 		<menuitem
 		    id="m_docs_refs_problematics"
 		    name="Проблематика ПИД"
