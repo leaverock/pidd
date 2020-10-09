@@ -62,3 +62,27 @@ class PID_Export(models.TransientModel):
                 'target': 'self',
             }
 
+
+class PidExportMulti(models.TransientModel):
+    _name='eco.pid.multi.wz'
+
+    name = fields.Char(compute="_compute_name")
+    date_start = fields.Date()
+    date_end   = fields.Date()
+
+    @api.multi
+    def _compute_name(self):
+        for rec in self:
+            rec.name = ''
+
+    @api.multi
+    def export_excel(self):
+        self.ensure_one()
+        return {
+            'type' : 'ir.actions.act_url',
+            'url': '/pid/export_multi?id=%s&filename=%s' % (
+                self.id,
+                "P14Export.xlsx",
+            ),
+            'target': 'self',
+        }

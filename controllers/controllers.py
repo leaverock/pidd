@@ -82,18 +82,18 @@ class Binary(http.Controller):
                 [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
                 [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
                 [u'Надзорный орган', _v1_08_SELECTION_DICT[rep.v1_08]],
-                [u'Административное наказание', nak_5],                                                 # 5 строка
-                [u'Номер статьи административного правонарушения', num_stat_6],                         # 6 строка
+                [u'Административное наказание', nak_5 if rep.protokol_file else ''],                                                 # 5 строка
+                [u'Номер статьи административного правонарушения', num_stat_6 if rep.protokol_file else ''],                         # 6 строка
                 [u'Регламентация (содержание нарушения)', rep.act_problematica.name_get()[0][1] if rep.act_problematica else ''],       # 7 строка
-                [u'Сумма предъявленного штрафа, руб.', summa_8],                                        # 8 строка
+                [u'Сумма предъявленного штрафа, руб.', summa_8 if rep.protokol_file else ''],                                        # 8 строка
                 [u'Текущее состояние ведения претензионной работы', rep.get_pret_state()],              # 9 строка
                 [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
-                [u'№ документа', numb_11],                                                              # 11 строка
-                [u'Дата документа', date_12],                                                           # 12 строка
-                [u'Наименование документа', name_13],                                                   # 13 строка
-                [u'Постановляющая часть', rep.postanovlenie_description if rep.postanovlenie_description else ''],                               # 14 строка
-                [u'№, дата ЕАСД', rep.postanovlenie_num_easd  if rep.postanovlenie_num_easd else '' + ', '
-                 + rep.postanovlenie_date_easd if rep.postanovlenie_date_easd else ''],     # 15 строка
+                [u'№ документа', numb_11 if rep.postanovlenie_file else ''],                                                              # 11 строка
+                [u'Дата документа', date_12 if rep.postanovlenie_file else ''],                                                           # 12 строка
+                [u'Наименование документа', name_13 if rep.postanovlenie_file else ''],                                                   # 13 строка
+                [u'Постановляющая часть', rep.postanovlenie_description if rep.postanovlenie_description or rep.postanovlenie_file else ''],  # 14 строка
+                [u'№, дата ЕАСД', (rep.postanovlenie_num_easd  if rep.postanovlenie_num_easd else '' + ', '
+                 + rep.postanovlenie_date_easd if rep.postanovlenie_date_easd else '') if rep.postanovlenie_file else ''],                 # 15 строка
             ]
             r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 
@@ -107,5 +107,38 @@ class Binary(http.Controller):
                                       ('Content-Disposition', content_disposition(filename))])
 
 
+    @http.route('/pid/download_help', type='http', auth="public")
+    @serialize_exception
+    def pid_download_help(self):
+        import os
+        #help_file_name = u'Карта_сайта_и_необходимые_доработки.pdf'
+        help_file_name = u'ПИД.pdf'
+        with open(os.path.split(__file__)[0] + u'/' + help_file_name, 'rb') as f:
+            doc_bytes = f.read()
+
+        return http.request.make_response(doc_bytes,
+                                     [('Content-Type', 'application/pdf'),
+                                      ('Content-Disposition', content_disposition(help_file_name))])
 
 
+    @http.route('/pid/export_multi', type='http', auth="user")
+    @serialize_exception
+    def pid_export_multi(self, id, filename, **kw):
+        workbook = MyWorkbook()
+        wz = http.request.env['eco.pid.multi.wz'].search([('id', '=', id)])
+
+        wz.date_start
+        wz.date_end
+
+        def counter_factory(start_row=0):
+            def returnrow(row=0):
+                returnrow.row += row
+                return returnrow.row - row
+
+            returnrow.row = start_row
+            return returnrow
+
+        get_row = counter_factory(5)
+        worksheet = workbook.add_worksheet(u"Приложение 14")
+
+        return workbook.get_response(filename)

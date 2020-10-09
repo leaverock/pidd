@@ -8,6 +8,7 @@
     'version': '0.1',
     'depends': ['eco'],
     'data': [
+        'assets.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/menu.xml',

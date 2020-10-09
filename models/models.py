@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from openerp import api, exceptions, fields, models
 from ..util import logInfo, log
+from ..controllers.tab1 import *
+from ..controllers.utils import *
 
 _v1_08_NADZ = [("nadz", u"Росприроднадзор")]
 _v1_08_PROC = [("proc", u"Прокуратура")]
@@ -22,6 +24,8 @@ _PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
 _PRET_STATE_SELECTION = _v1_08_NADZ + _v1_08_PROC
 _PRET_STATE_SELECTION_DICT = dict(_PRET_STATE_SELECTION)
 
+help_mark = u'<span>?</span>'
+
 class Problem(models.Model):
     if log ['models']: logInfo('***** pid.models.Problem: class enter')
     _name = 'eco.pret_isk.problems'
@@ -39,6 +43,15 @@ class Pid(models.Model):
     creator_department_id = fields.Many2one('eco.department', related="create_uid.department_id")
     # pret_state = fields.Selection(_PRET_STATE_SELECTION_DICT)
 
+    @api.multi
+    def download_help(self):
+        self.ensure_one()
+        return  {
+                'type' : 'ir.actions.act_url',
+                'url': '/pid/download_help',
+                'target': 'new',
+            }
+
 
     def search(self, cr, uid, domain, *args, **kwargs):
         '''
@@ -48,6 +61,41 @@ class Pid(models.Model):
         domain += [('creator_department_id', 'in', dep_ids)]
         res = super(Pid, self).search(cr, uid, domain, *args, **kwargs)
         return res
+
+
+    ##############################################################################################################
+    #
+    #  О знаках вопроса
+    #
+    ##############################################################################################################
+    question_mark_block_button1 = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Внимание! Нажав кнопку «Заблокировать» Вы подтверждаете в достоверности внесенных сведений в данную карточку. Разблокировать карточку сможет руководитель структурного подразделения под свою ответственность")
+    question_mark_block_button2 = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Внимание! Нажав кнопку «Заблокировать» Вы подтверждаете в достоверности внесенных сведений в данную карточку. Разблокировать карточку сможет руководитель структурного подразделения под свою ответственность")
+    question_mark_block_button3 = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Внимание! Нажав кнопку «Заблокировать» Вы подтверждаете в достоверности внесенных сведений в данную карточку. Разблокировать карточку сможет руководитель структурного подразделения под свою ответственность")
+    question_mark_block_button4 = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Внимание! Нажав кнопку «Заблокировать» Вы подтверждаете в достоверности внесенных сведений в данную карточку. Разблокировать карточку сможет руководитель структурного подразделения под свою ответственность")
+    question_mark_akt_has_narush = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"В случае выявленных нарушений и указанных в акте нажмите на ячейку с  флагом «Есть нарушения» после чего Вам откроется карточка для внесения сведений по нарушениям")
+    question_mark_protokol = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Для продолжения внесения первичных сведений необходимо обязательно загрузить отсканированный протокол")
+    question_mark_predpisanie = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Для продолжения внесения первичных сведений необходимо обязательно загрузить отсканированное предписание")
+    question_mark_predpisanie_summa = fields.Html(default=help_mark, compute="_compute_question_mark",
+        help=u"Внимание! Данная сумма будет автоматически импортирована в раздел ЗО-1 как факт оплаченного штрафа")
+
+    @api.multi
+    def _compute_question_mark(self):
+        for rec in self:
+            rec.question_mark_block_button1 = help_mark
+            rec.question_mark_block_button2 = help_mark
+            rec.question_mark_block_button3 = help_mark
+            rec.question_mark_block_button4 = help_mark
+            rec.question_mark_akt_has_narush = help_mark
+            rec.question_mark_protokol = help_mark
+            rec.question_mark_predpisanie = help_mark
+            rec.question_mark_predpisanie_summa = help_mark
 
     ##############################################################################################################
     #
@@ -207,21 +255,25 @@ class Pid(models.Model):
     @api.multi
     def get_pret_state(self):
         self.ensure_one()
-        if self.postanovlenie_is_accepted == '1':
+        # if not (self.akt_file and self.protokol_file and self.postanovlenie_file):
+        #     res = u"Принято"
+        if self.postanovlenie_is_accepted == '1' and self.postanovlenie_file:
             res = u"Исполнение постановления"
-        elif self.postanovlenie_is_accepted == '2':
+        elif self.postanovlenie_is_accepted == '2' and self.postanovlenie_file:
             res = u"Отмена постановления"
-        elif self.postanovlenie_is_accepted == '3':
+        elif self.postanovlenie_is_accepted == '3' and self.postanovlenie_file:
             res = u"Выполнение постановления"
-        elif self.protokol_is_accepted == '1':
+        elif self.protokol_is_accepted == '1' and self.protokol_file:
             res = u"Исполнение протокола"
-        elif self.protokol_is_accepted == '2':
+        elif self.protokol_is_accepted == '2' and self.protokol_file:
             res = u"Отмена протокола"
-        elif self.protokol_is_accepted == '3':
+        elif self.protokol_is_accepted == '3' and self.protokol_file:
             res = u"Выполнение протокола"
-        elif self.akt_is_accepted == '1':
+        elif not self.akt_has_narush:
+            res = u"Не выявлено"
+        elif self.akt_is_accepted == '1' and self.akt_file:
             res = u"Исполнение предписания"
-        elif self.akt_is_accepted == '2':
+        elif self.akt_is_accepted == '2' and self.akt_file:
             if self.akt_predpisanie_state == '1':
                 res = u"Отмена предписания"
             else:
@@ -259,6 +311,78 @@ class Pid(models.Model):
                     setattr(rec, 'can_see_unlock_tab%d' % d, False)
 
 
+    @api.multi
+    def do_print_xlsx(self, workbook):
+        #####################################################################################################################
+        #
+        #   Вкладка: Информация о предъявленных административных штрафах на юридическое лицо
+        #
+        #####################################################################################################################
+        worksheet = workbook.add_worksheet(u'Штрафы')
+        worksheet.set_column(0, tab1_width - 1, cell_width)
+        r = tab1_01_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах на юридическое лицо')
+        r, col_widths = table_1_1_head(workbook, worksheet, r)
+        if not self.v1_01:
+            raise
+        dep_id = self.v1_01[0]
+
+        def _seek_cdir(dep):
+            if dep.role == 'cdir':
+                return dep
+            else:
+                if dep.parent_id:
+                    return _seek_cdir(dep.parent_id)
+                return dep
+
+        if self.postanovlenie_zakon == '1':          # КОаП РФ
+            stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % ( self.postanovlenie_iskodex_1 if self.postanovlenie_iskodex_1 else '',
+                                                            self.postanovlenie_iskodex_2 if self.postanovlenie_iskodex_2 else '',
+                                                            self.postanovlenie_iskodex_3 if self.postanovlenie_iskodex_3 else '',
+                                                            self.postanovlenie_iskodex_4 if self.postanovlenie_iskodex_4 else '')
+            if self.protokol_iskodex_6 > 0.0:
+                nak_5 = u"административный штраф"
+            else:
+                nak_5 = u"-"
+            num_stat_6 = stat + '\n' + self.protokol_description if self.protokol_description else ''
+            summa_8 = str(self.protokol_iskodex_6) if self.protokol_iskodex_6 else ''\
+                        + u' руб., ' + str(self.protokol_iskodex_7 if self.protokol_iskodex_7 else '')
+            summa_10 = self.postanovlenie_iskodex_6 if self.postanovlenie_iskodex_6  else ''
+            numb_11 = stat
+            date_12 = self.postanovlenie_iskodex_5 if self.postanovlenie_iskodex_5  else ''
+            name_13 = u"Постановление о назначении административного штрафа"
+
+        if self.postanovlenie_zakon == '2':          # Иное законодательство
+            if self.protokol_notkodex_summa > 0.0:
+                nak_5 = u"административный штраф"
+            else:
+                nak_5 = u"-"
+            num_stat_6 = u"Иное законадательство" + '\n' + self.protokol_description if self.protokol_description  else ''
+            summa_8 = str(self.protokol_notkodex_summa) if self.protokol_notkodex_summa  else ''\
+                        + u' руб., ' + str(self.protokol_notkodex_date)  if self.protokol_notkodex_date  else ''
+            summa_10 = self.postanovlenie_notkodex_summa  if self.postanovlenie_notkodex_summa  else ''
+            numb_11 = self.postanovlenie_notkodex_num if self.postanovlenie_notkodex_num  else ''
+            date_12 = self.postanovlenie_notkodex_date if self.postanovlenie_notkodex_date  else ''
+            name_13 = self.postanovlenie_notkodex_name if self.postanovlenie_notkodex_name  else ''
+
+        arg = [
+            [u'Принадлежность к железной дороге',  dep_id.rel_railway_id.name_get()[0][1] if dep_id.rel_railway_id else ''],
+            [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
+            [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
+            [u'Надзорный орган', _v1_08_SELECTION_DICT[self.v1_08]],
+            [u'Административное наказание', nak_5 if self.protokol_file else ''],                                                 # 5 строка
+            [u'Номер статьи административного правонарушения', num_stat_6 if self.protokol_file else ''],                         # 6 строка
+            [u'Регламентация (содержание нарушения)', self.act_problematica.name_get()[0][1] if self.act_problematica else ''],       # 7 строка
+            [u'Сумма предъявленного штрафа, руб.', summa_8 if self.protokol_file else ''],                                        # 8 строка
+            [u'Текущее состояние ведения претензионной работы', self.get_pret_state()],              # 9 строка
+            [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
+            [u'№ документа', numb_11 if self.postanovlenie_file else ''],                                                              # 11 строка
+            [u'Дата документа', date_12 if self.postanovlenie_file else ''],                                                           # 12 строка
+            [u'Наименование документа', name_13 if self.postanovlenie_file else ''],                                                   # 13 строка
+            [u'Постановляющая часть', self.postanovlenie_description if self.postanovlenie_description or self.postanovlenie_file else ''],  # 14 строка
+            [u'№, дата ЕАСД', (self.postanovlenie_num_easd  if self.postanovlenie_num_easd else '' + ', '
+                + self.postanovlenie_date_easd if self.postanovlenie_date_easd else '') if self.postanovlenie_file else ''],                 # 15 строка
+        ]
+        r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 
 ##############################################################################################################
 #
