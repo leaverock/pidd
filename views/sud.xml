@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <record id="menu_action_sud" model="ir.actions.act_window">
+        <field name="name">Судебная работа</field>
+        <field name="res_model">eco.pret_isk.sud</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="eco_pid_sud_view_tree" model="ir.ui.view">
+        <field name="name">eco.pret_isk.sud.view.tree</field>
+        <field name="model">eco.pret_isk.sud</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="data_predyavlenia"/>
+                <field name="kto_predyavil"/>
+                <field name="cena_iska"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="eco_pid_sud_view_form" model="ir.ui.view">
+        <field name="name">eco.pret_isk.sud.view.form</field>
+        <field name="model">eco.pret_isk.sud</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="data_predyavlenia"/>
+                    <field name="kto_predyavil"/>
+                    <field name="predmet_iska"/>
+                    <field name="osnovanie_iska"/>
+                    <field name="cena_iska"/>
+                    <field name="meropriyatie"/>
+                    <field name="category"/>
+                    <field name="state"/>
+                    <field name="data_napravleniya"/>
+                    <field name="kakoy_sud"/>
+                    <field name="summa"/>
+                    <field name="file"/>
+                    <field name="filename"/>
+                    <field name="rekvizity"/>
+                    <field name="kem_obzhalovan"/>
+                </group>
+                <field name="log_ids"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="eco_pret_isk_export_view" model="ir.ui.view">
+        <field name="name">Экспорт производственного контроля форма</field>
+        <field name="model">eco.pret_isk.export.wz</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Экспорт в формат .xlsx" type="object" name="export_excel" class="oe_highlight"/>
+                </header>
+                <field name="pret_isk_ids"/>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="eco_pret_isk_export_act_window"
+                name="Экспортировать"
+                src_model="eco.pret_isk"
+                res_model="eco.pret_isk.export.wz"
+                view_mode="form"
+                target="new"
+                key2="client_action_multi"/> -->
+
+</data>
+</openerp>

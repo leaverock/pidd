@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/sud.xml',
         'views/menu.xml',
         'data/eco_pret_isk_problems_view_content.xml',
     ],
