@@ -38,11 +38,12 @@
                     <field name="data_napravleniya"/>
                     <field name="kakoy_sud"/>
                     <field name="summa"/>
-                    <span colspan="2">
-                        <div class="oe_form_label oe_align_right" attrs="{'invisible':[('file','!=',False)]}" style="line-height: 18px;min-width: 150px;font-weight: bold">Файл</div>
-                        <field name="filename" nolabel="1" attrs="{'readonly':[('file','=',False)], 'invisible':[('file','=',False)]}"/>
-                        <field name="file" filename="filename"/>
+                    <span>
+                        <div class="oe_form_label oe_align_right oe_edit_only" attrs="{'invisible':[('file','!=',False)]}" style="line-height: 18px;min-width: 150px;font-weight: bold">Файл</div>
+                        <div class="oe_form_label oe_align_right oe_read_only" style="line-height: 18px;min-width: 150px;font-weight: bold">Файл</div>
+                        <field name="filename" nolabel="1" attrs="{'readonly':[('file','=',False)], 'invisible':[('file','=',False)]}" class="oe_edit_only"/>
                     </span>
+                    <field name="file" filename="filename" nolabel="1"/>
                     <field name="rekvizity"/>
                     <field name="kem_obzhalovan"/>
                 </group>
