@@ -28,3 +28,6 @@
     text-align: center !important;
 }
 
+label.text-wrap {
+    white-space: normal !important;
+}
