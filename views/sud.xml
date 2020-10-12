@@ -25,7 +25,7 @@
         <field name="model">eco.pret_isk.sud</field>
         <field name="arch" type="xml">
             <form>
-                <field name="id"/>
+                <field name="id" invisible="1"/>
                 <group>
                     <field name="data_predyavlenia"/>
                     <field name="kto_predyavil"/>
