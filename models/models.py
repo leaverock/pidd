@@ -99,6 +99,13 @@ class Pid(models.Model):
 
     ##############################################################################################################
     #
+    #  Переменные левой боковой вкладки
+    #
+    ##############################################################################################################
+
+
+    ##############################################################################################################
+    #
     #  Переменные вкладки "1. Основные сведения" представления' модуля eco.pret_isk'
     #
     ##############################################################################################################
@@ -322,6 +329,7 @@ class Pid(models.Model):
         worksheet.set_column(0, tab1_width - 1, cell_width)
         r = tab1_01_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах на юридическое лицо')
         r, col_widths = table_1_1_head(workbook, worksheet, r)
+
         if not self.v1_01:
             raise
         dep_id = self.v1_01[0]
@@ -334,21 +342,30 @@ class Pid(models.Model):
                     return _seek_cdir(dep.parent_id)
                 return dep
 
+        def get_val_cond(val, cond):
+            r = ''
+            if cond:
+                try:
+                    r = str(val)
+                except:
+                    r = unicode(val)
+            return r
+
+        def get_val(val, pref = '', post = ''):
+            return pref + get_val_cond(val, val) + post
+
         if self.postanovlenie_zakon == '1':          # КОаП РФ
-            stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % ( self.postanovlenie_iskodex_1 if self.postanovlenie_iskodex_1 else '',
-                                                            self.postanovlenie_iskodex_2 if self.postanovlenie_iskodex_2 else '',
-                                                            self.postanovlenie_iskodex_3 if self.postanovlenie_iskodex_3 else '',
-                                                            self.postanovlenie_iskodex_4 if self.postanovlenie_iskodex_4 else '')
+            stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % ( get_val(self.postanovlenie_iskodex_1), get_val(self.postanovlenie_iskodex_2),
+                                                           get_val(self.postanovlenie_iskodex_3), get_val(self.postanovlenie_iskodex_4))
             if self.protokol_iskodex_6 > 0.0:
                 nak_5 = u"административный штраф"
             else:
                 nak_5 = u"-"
-            num_stat_6 = stat + '\n' + self.protokol_description if self.protokol_description else ''
-            summa_8 = str(self.protokol_iskodex_6) if self.protokol_iskodex_6 else ''\
-                        + u' руб., ' + str(self.protokol_iskodex_7 if self.protokol_iskodex_7 else '')
-            summa_10 = self.postanovlenie_iskodex_6 if self.postanovlenie_iskodex_6  else ''
+            num_stat_6 = stat + get_val(self.protokol_description, pref = u', ')
+            summa_8 = get_val(self.protokol_iskodex_6, post = u' руб.') + get_val(self.protokol_iskodex_7, pref = u', ')
+            summa_10 = get_val(self.postanovlenie_iskodex_6)
             numb_11 = stat
-            date_12 = self.postanovlenie_iskodex_5 if self.postanovlenie_iskodex_5  else ''
+            date_12 = get_val(self.postanovlenie_iskodex_5)
             name_13 = u"Постановление о назначении административного штрафа"
 
         if self.postanovlenie_zakon == '2':          # Иное законодательство
@@ -356,14 +373,17 @@ class Pid(models.Model):
                 nak_5 = u"административный штраф"
             else:
                 nak_5 = u"-"
-            num_stat_6 = u"Иное законадательство" + '\n' + self.protokol_description if self.protokol_description  else ''
-            summa_8 = str(self.protokol_notkodex_summa) if self.protokol_notkodex_summa  else ''\
-                        + u' руб., ' + str(self.protokol_notkodex_date)  if self.protokol_notkodex_date  else ''
-            summa_10 = self.postanovlenie_notkodex_summa  if self.postanovlenie_notkodex_summa  else ''
-            numb_11 = self.postanovlenie_notkodex_num if self.postanovlenie_notkodex_num  else ''
-            date_12 = self.postanovlenie_notkodex_date if self.postanovlenie_notkodex_date  else ''
-            name_13 = self.postanovlenie_notkodex_name if self.postanovlenie_notkodex_name  else ''
+            num_stat_6 = u"Иное законадательство" + get_val(self.protokol_description, pref = u', ')
+            summa_8 = get_val(self.protokol_notkodex_summa, post = u' руб.') + get_val(self.protokol_notkodex_date, pref = u', ')
+            summa_10 = get_val(self.postanovlenie_notkodex_summa)
+            numb_11 = get_val(self.postanovlenie_notkodex_num)
+            date_12 = get_val(self.postanovlenie_notkodex_date)
+            name_13 = get_val(self.postanovlenie_notkodex_name)
 
+        # logInfo('*** models.Pid.do_print_xlsx: self.postanovlenie_zakon: %s' % self.postanovlenie_zakon)
+        # logInfo('*** models.Pid.do_print_xlsx: stat: %s' % stat)
+        # logInfo('*** models.Pid.do_print_xlsx: num_stat_6: %s' % num_stat_6)
+        '''        
         arg = [
             [u'Принадлежность к железной дороге',  dep_id.rel_railway_id.name_get()[0][1] if dep_id.rel_railway_id else ''],
             [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
@@ -378,9 +398,26 @@ class Pid(models.Model):
             [u'№ документа', numb_11 if self.postanovlenie_file else ''],                                                              # 11 строка
             [u'Дата документа', date_12 if self.postanovlenie_file else ''],                                                           # 12 строка
             [u'Наименование документа', name_13 if self.postanovlenie_file else ''],                                                   # 13 строка
-            [u'Постановляющая часть', self.postanovlenie_description if self.postanovlenie_description or self.postanovlenie_file else ''],  # 14 строка
-            [u'№, дата ЕАСД', (self.postanovlenie_num_easd  if self.postanovlenie_num_easd else '' + ', '
-                + self.postanovlenie_date_easd if self.postanovlenie_date_easd else '') if self.postanovlenie_file else ''],                 # 15 строка
+            [u'Постановляющая часть', self.postanovlenie_description if self.postanovlenie_description and self.postanovlenie_file else ''],  # 14 строка
+            [u'№, дата ЕАСД', (get_val(self.postanovlenie_num_easd) + get_val(self.postanovlenie_date_easd, pref = u', ')) if self.postanovlenie_file else ''], # 15 строка
+        ]
+        '''
+        arg = [
+            [u'Принадлежность к железной дороге',  get_val_cond(dep_id.rel_railway_id.name_get()[0][1], dep_id.rel_railway_id)],
+            [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
+            [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
+            [u'Надзорный орган', _v1_08_SELECTION_DICT[self.v1_08]],
+            [u'Административное наказание', get_val_cond(nak_5, self.protokol_file)],                                                 # 5 строка
+            [u'Номер статьи административного правонарушения', get_val_cond(num_stat_6, self.protokol_file)],                         # 6 строка
+            [u'Регламентация (содержание нарушения)', get_val_cond(self.act_problematica.name_get()[0][1], self.act_problematica)],       # 7 строка
+            [u'Сумма предъявленного штрафа, руб.', get_val_cond(summa_8, self.protokol_file)],                                        # 8 строка
+            [u'Текущее состояние ведения претензионной работы', self.get_pret_state()],              # 9 строка
+            [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
+            [u'№ документа', get_val_cond(numb_11, self.postanovlenie_file)],                                                              # 11 строка
+            [u'Дата документа', get_val_cond(date_12, self.postanovlenie_file)],                                                           # 12 строка
+            [u'Наименование документа', get_val_cond(name_13, self.postanovlenie_file)],                                                   # 13 строка
+            [u'Постановляющая часть', get_val_cond(self.postanovlenie_description, self.postanovlenie_description and self.postanovlenie_file)],  # 14 строка
+            [u'№, дата ЕАСД', get_val_cond((get_val(self.postanovlenie_num_easd) + get_val(self.postanovlenie_date_easd, pref = u', ')), self.postanovlenie_file)], # 15 строка
         ]
         r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 

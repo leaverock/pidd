@@ -10,8 +10,8 @@
 .help_mark_left div.o_readonly span {
     border-radius:1em;
     font-size:1.2em;
-    color:white;
-    background-color:red;
+    color:#ffff00;
+    background-color:#20b2aa;
     min-width:1em;
     /*
     float:right;
@@ -19,6 +19,7 @@
     padding: 0 0.4em;
     border: 1px solid black;
     margin-bottom: 2px;
+    text-shadow: black 1px 1px 0, black 1px 1px 0, black 1px 1px 0, black 1px 1px 0;
 }
 
 .text-center-force th,

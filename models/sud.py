@@ -29,15 +29,22 @@ class SudebnayaRabota(models.Model):
     category = fields.Char(u"Категория")
     state = fields.Selection(_STATE_SELECTION, u"Текущая ситуация")
 
-    data_napravleniya = fields.Date(u"Дата направления",    states=['na_obzh'])
-    kakoy_sud = fields.Char(u"Какой суд",                   states=['na_obzh', 'otmen'])
-    summa = fields.Float(u"Сумма, тыс руб", (10, 3),        states=['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach'])
-    file = fields.Char(u"Файл",                             states=['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach'])
-    filename = fields.Char(u"Имя файла",                    states=['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach'])
-    rekvizity = fields.Char(u"Реквизиты документа",         states=['vozme', 'oplach'])
-    kem_obzhalovan = fields.Char(u"Кем",                    states=['vozme', 'oplach'])
+    # data_napravleniya = fields.Date(u"Дата направления",    states={'invisible':['na_obzh']})
+    # kakoy_sud = fields.Char(u"Какой суд",                   states={'invisible':['na_obzh', 'otmen']})
+    # summa = fields.Float(u"Сумма, тыс руб", (10, 3),        states={'invisible':['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach']})
+    # file = fields.Char(u"Файл",                             states={'invisible':['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach']})
+    # filename = fields.Char(u"Имя файла",                    states={'invisible':['na_obzh', 'obzhal', 'otmen', 'vozme', 'oplach']})
+    # rekvizity = fields.Char(u"Реквизиты документа",         states={'invisible':['vozme', 'oplach']})
+    # kem_obzhalovan = fields.Char(u"Кем",                    states={'invisible':['vozme', 'oplach']})
+    data_napravleniya = fields.Date(u"Дата направления",    states={False:[('invisible',1)], 'obzhal':[('invisible',1)], 'otmen':[('invisible',1)], 'vozme':[('invisible',1)], 'oplach':[('invisible',1)], })
+    kakoy_sud = fields.Char(u"Какой суд",                   states={False:[('invisible',1)], 'obzhal':[('invisible',1)], 'vozme':[('invisible',1)], 'oplach':[('invisible',1)], })
+    summa = fields.Float(u"Сумма, тыс руб", (10, 3),        states={False:[('invisible',1)],})
+    file = fields.Binary(u"Файл",                           states={False:[('invisible',1)],})
+    filename = fields.Char(u"Имя файла",                    states={False:[('invisible',1)],})
+    rekvizity = fields.Char(u"Реквизиты документа",         states={False:[('invisible',1)], 'na_obzh':[('invisible',1)], 'obzhal':[('invisible',1)], 'otmen':[('invisible',1)], })
+    kem_obzhalovan = fields.Char(u"Кем",                    states={False:[('invisible',1)], 'na_obzh':[('invisible',1)], 'obzhal':[('invisible',1)], 'otmen':[('invisible',1)], })
 
-    log_ids = fields.One2many('eco.pret_isk.sud.log', 'sud_id', u"Логи")
+    log_ids = fields.One2many('eco.pret_isk.sud.log', 'sud_id', u"Логи", readonly=True)
 
     @api.multi
     def write(self, new_vals):
@@ -54,7 +61,7 @@ class SudebnayaRabota(models.Model):
     def create(self, vals):
         res = super(SudebnayaRabota, self).create(vals)
         self.env['eco.pret_isk.sud.log'].create({
-            'sud_id': rec.id,
+            'sud_id': res.id,
             'state': vals.get('state', False),
             'summa': vals.get('summa', False),
         })

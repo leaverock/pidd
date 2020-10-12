@@ -378,43 +378,40 @@
             </form>
         </field>
     </record>
-<!--
-        <record id="sssssssssssssssssss" model="ir.actions.act_window">
-            <field name="name">sssssssssssssssssss Экспорт</field>
-            <field name="res_model">eco.pid.multi.wz</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="target">inline</field>
-        </record>
 
-        <record id="sssssssssssssssssss" model="ir.ui.view">
-            <field name="name">sssssssssssssssssss Экспорт форма</field>
-            <field name="model">eco.pid.multi.wz</field>
-            <field name="arch" type="xml">
-                <form string="Печать отчёта" version="7.0">
-                    <sheet>
-                        <group>
-                            <field name="date_start"/>
-                            <field name="date_end"/>
-                        </group>
-                    </sheet>
-                    <footer>
-                        <button string="Выгрузить в Excel" type="object" class="oe_highlight" name="export_excel"/>
-                        или
-                        <button string="Перейти к перечню" type="action" name="%(menu_action_ref_problematics_action)d"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
--->
-        <!-- <act_window id="eco_pret_isk_export_act_window"
-                    name="Экспортировать"
-                    src_model="eco.pret_isk"
-                    res_model="eco.pret_isk.export.wz"
-                    view_mode="form"
-                    target="new"
-                    key2="client_action_multi"/> -->
+    <record id="act_pid_export" model="ir.actions.act_window">
+        <field name="name">Печать отчёта</field>
+        <field name="res_model">eco.pid.multi.wz</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+    <record id="act_pid_export_form" model="ir.ui.view">
+        <field name="name">Претензионно-исковая деятельность Экспорт форма</field>
+        <field name="model">eco.pid.multi.wz</field>
+        <field name="arch" type="xml">
+            <form string="Печать отчёта" version="7.0">
+                <sheet>
+                    <group>
+                        <field name="year"/>
+                        <!--
+                        <field name="report_period" widget="radio"/>
+                        <field name="quarter" attrs="{'invisible':[('report_period','=','annual')],'requried':[('report_period','=','quarter')]}"/>
+                        -->
+                        <field name="quarter"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Выгрузить в Excel" type="object" class="oe_highlight" name="export_excel"/>
+                    или
+                    <button string="Перейти к перечню" type="action" name="%(eco_pid_action)d"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
     <report
             id="eco_pret_risk_report"
             model="eco.pret_isk"
