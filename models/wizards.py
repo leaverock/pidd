@@ -8,16 +8,14 @@ def get_years_list(*a, **b):
     res.reverse()
     return res
 
+
 def default_year(*a):
     return str(datetime.now().year)
-#_REPORT_IS_ANNUAL = [('annual', u'Сформировать отчёт за год')]
-#_REPORT_IS_QUARTER = [('quarter', u'Сформировать отчёт за квартал')]
-#_SELECTION_REPORT_PERIOD = _REPORT_IS_ANNUAL + _REPORT_IS_QUARTER
 
 
 class PID_Export(models.TransientModel):
     _name = 'eco.pret_isk.export.wz'
-    _description = u'Визард для экспорта текущей формы претензионно-исковой деятельности'
+    _description = u'Визард для экспорта текущей формы ПИД'
 
     def _default_decklarations(self):
         return self.env['eco.pret_isk'].browse(self._context.get('active_ids', []))[0]
@@ -34,51 +32,13 @@ class PID_Export(models.TransientModel):
                 'target': 'self',
             }
 
-'''
-class PidExportMulti(models.TransientModel):
-    _name='eco.pid.multi.wz'
-    _description = u'Визард для экспорта форм за определёный период претензионно-исковой деятельности'
-
-    name = fields.Char(compute="_compute_name")
-    year = fields.Selection(get_years_list, u"Выберите год отчёта", default=default_year)
-    report_period = fields.Selection(_SELECTION_REPORT_PERIOD, u"Период отчёта", default=_REPORT_IS_QUARTER[0][0])
-    quarter = fields.Selection([('1','I'),('2','II'),('3','III'),('4','IV')], u'Квартал')
-    date_start = fields.Date()
-    date_end   = fields.Date()
-
-    @api.multi
-    def _compute_name(self):
-        for rec in self:
-            rec.name = ''
-
-    @api.multi
-    def export_excel(self):
-        self.ensure_one()
-        return {
-            'type' : 'ir.actions.act_url',
-            'url': '/pid/export_multi?id=%s&filename=%s' % (
-                self.id,
-                "P14Export.xlsx",
-            ),
-            'target': 'self',
-        }
-'''
 
 class PidExportMulti(models.TransientModel):
     _name='eco.pid.multi.wz'
-    _description = u'Визард для экспорта форм за определёный период претензионно-исковой деятельности'
+    _description = u'Визард для экспорта форм ПИД за определёный период'
 
-    #name = fields.Char(compute="_compute_name")
-    year = fields.Selection(get_years_list, u"Выберите год отчёта", default=default_year)
-    #report_period = fields.Selection(_SELECTION_REPORT_PERIOD, u"Период отчёта", default=_REPORT_IS_QUARTER[0][0])
-    quarter = fields.Selection([('1','I'),('2','II'),('3','III'),('4','IV')], u'Квартал')
-    #date_start = fields.Date()
-    #date_end   = fields.Date()
-
-    # @api.multi
-    # def _compute_name(self):
-    #     for rec in self:
-    #         rec.name = ''
+    year = fields.Selection(get_years_list, u"Выберите год отчёта", default=default_year, required=True)
+    quarter = fields.Selection([('1','I'),('2','II'),('3','III'),('4','IV')], u'Квартал', default='4', required=True)
 
     @api.multi
     def export_excel(self):

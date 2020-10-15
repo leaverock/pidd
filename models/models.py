@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from openerp import api, exceptions, fields, models
 from ..util import logInfo, log
 from ..controllers.tab1 import *
@@ -9,18 +11,6 @@ _v1_08_PROC = [("proc", u"Прокуратура")]
 _v1_08_SELECTION = _v1_08_NADZ + _v1_08_PROC
 _v1_08_SELECTION_DICT = dict(_v1_08_SELECTION)
 
-_PRET_STATE_ACCEPTED = [("accepted", u"Принято")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Есть нарушения")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
-_PRET_STATE_NOT_LOCATED = [("not_located", u"Не обнаружено")]
 _PRET_STATE_SELECTION = _v1_08_NADZ + _v1_08_PROC
 _PRET_STATE_SELECTION_DICT = dict(_PRET_STATE_SELECTION)
 
@@ -97,32 +87,54 @@ class Pid(models.Model):
             rec.question_mark_predpisanie = help_mark
             rec.question_mark_predpisanie_summa = help_mark
 
-    ##############################################################################################################
-    #
-    #  Переменные левой боковой вкладки
-    #
-    ##############################################################################################################
-
 
     ##############################################################################################################
     #
     #  Переменные вкладки "1. Основные сведения" представления' модуля eco.pret_isk'
     #
     ##############################################################################################################
-    v1_01 = fields.Many2many(
-        'eco.department',
-        string=u"Предприятия и их полигоны", required=True
+
+
+
+    v1_01_changed = fields.Boolean()
+    v1_01_with_sum1 = fields.One2many(related="v1_01")
+    v1_01_with_sum2 = fields.One2many(related="v1_01")
+    @api.onchange('v1_01')
+    def _onchange_v1_01(self):
+        self.v1_01_changed = True
+
+    @api.multi
+    def write(self, new_vals):
+        if new_vals.get('v1_01_changed'):
+            new_vals.pop('v1_01_with_sum1', None)
+            new_vals.pop('v1_01_with_sum2', None)
+        new_vals['v1_01_changed'] = False
+        return super(Pid, self).write(new_vals)
+    
+    @api.model
+    def create(self, vals):
+        vals.pop('v1_01_with_sum1', None)
+        vals.pop('v1_01_with_sum2', None)
+        vals['v1_01_changed'] = False
+        return super(Pid, self).create(vals)
+
+
+
+    v1_01 = fields.One2many(
+        'eco.pret_isk.pred_poligon',
+        'pid_id',
+        string=u"Предприятия и их полигоны", required=True,
     )
-    v1_02 = fields.Text(u'Основание проведения проверки', required=True)
+    v1_02 = fields.Text(u'Основание проведения проверки', required=True, default = u' ')
     v1_03 = fields.Selection([("plan_doc", u"Плановая документарная"), ("plan_out", u"Плановая выездная"),
         ("out_plan_doc", u"Внеплановая документарная"), ("out_plan_out", u"Внеплановая выездная")], string=u'Вид проверки', default="plan_doc")
-    v1_04 = fields.Char(u"Исходящий номер", required=True)
-    v1_05 = fields.Char(u"Номер входящего", required=True)
-    v1_06 = fields.Date(u'Дата поступления в ОАО "РЖД"', required=True)
-    v1_07 = fields.Text(u'Краткое содержание документа', required=True)
+    v1_04 = fields.Char(u"Исходящий номер", required=True, default = ' ')
+    v1_05 = fields.Char(u"Номер входящего", required=True, default = ' ')
+    v1_07 = fields.Text(u'Краткое содержание документа', required=True, default = ' ')
+    v1_06 = fields.Date(u'Дата поступления в ОАО "РЖД"', required=True, default=lambda self: datetime.now())
     v1_08 = fields.Selection(_v1_08_SELECTION, string=u'ФОИВ осуществляющий проверку', default=_v1_08_NADZ[0][0])
     v1_09 = fields.Selection([("pric", u"Приказ"), ("rasp", u"Распоряжение"),], string=u'Наименования документа ', default="pric")
-    v1_10 = fields.Date(u'Плановый срок исполнения', required=True)
+    v1_10 = fields.Date(u'Плановый срок исполнения', required=True, default=lambda self: datetime.now())
     v1_11 = fields.One2many('eco.pret_isk.attached_files', 'pid_id', string=u'Документы', domain=[('tab', '=', '1'), ])
 
     ##############################################################################################################
@@ -158,7 +170,6 @@ class Pid(models.Model):
 
     akt_predpisanie_exec_file = fields.Binary(u"Выполнение предписания")
     akt_predpisanie_exec_name = fields.Char(u"Выполнение предписания")
-
 
 
     ##############################################################################################################
@@ -310,116 +321,49 @@ class Pid(models.Model):
         dep_ids = self.env['eco.department'].search([])
         for rec in self:
             if self.env.user.id == 1 or (self.env.user.user_role == 'dep_eng' and rec.create_uid.department_id in dep_ids):
-            # if self.env.user.id == 1 or self.env.user.department_id == rec.create_uid.department_id.parent_id or self.env.user == rec.create_uid:
                 for d in range(1, 5):
                     setattr(rec, 'can_see_unlock_tab%d' % d, getattr(rec, 'tab%d_done' % d))
             else:
                 for d in range(1, 5):
                     setattr(rec, 'can_see_unlock_tab%d' % d, False)
 
-
+    ##############################################################################################################
+    #
+    #  Экспорт текущей формы
+    #
+    ##############################################################################################################
     @api.multi
     def do_print_xlsx(self, workbook):
-        #####################################################################################################################
-        #
-        #   Вкладка: Информация о предъявленных административных штрафах на юридическое лицо
-        #
-        #####################################################################################################################
+
         worksheet = workbook.add_worksheet(u'Штрафы')
         worksheet.set_column(0, tab1_width - 1, cell_width)
         r = tab1_01_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах на юридическое лицо')
         r, col_widths = table_1_1_head(workbook, worksheet, r)
 
-        if not self.v1_01:
-            raise
-        dep_id = self.v1_01[0]
+        arg = list(zip([
+            u'Принадлежность к железной дороге', # 1 строка
+            u'Принадлежность структурного подразделения', # 2 строка
+            u'Подразделение на железной дороге', # 3 строка
+            u'Надзорный орган', # 4 строка
+            u'Административное наказание', # 5 строка
+            u'Номер статьи административного правонарушения', # 6 строка
+            u'Регламентация (содержание нарушения)', # 7 строка
+            u'Сумма предъявленного штрафа, руб.', # 8 строка
+            u'Текущее состояние ведения претензионной работы', # 9 строка
+            u'Фактически оплаченная сумма, руб.', # 10 строка
+            u'№ документа', # 11 строка
+            u'Дата документа', # 12 строка
+            u'Наименование документа', # 13 строка
+            u'Постановляющая часть', # 14 строка
+            u'№, дата ЕАСД', # 15 строка
+        ], get_report_data_from_record(self)))
 
-        def _seek_cdir(dep):
-            if dep.role == 'cdir':
-                return dep
-            else:
-                if dep.parent_id:
-                    return _seek_cdir(dep.parent_id)
-                return dep
+        #r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 
-        def get_val_cond(val, cond):
-            r = ''
-            if cond:
-                try:
-                    r = str(val)
-                except:
-                    r = unicode(val)
-            return r
+        if log['controllers']:
+            logInfo('pid.models.models: arg: %s' % arg)
 
-        def get_val(val, pref = '', post = ''):
-            return pref + get_val_cond(val, val) + post
 
-        if self.postanovlenie_zakon == '1':          # КОаП РФ
-            stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % ( get_val(self.postanovlenie_iskodex_1), get_val(self.postanovlenie_iskodex_2),
-                                                           get_val(self.postanovlenie_iskodex_3), get_val(self.postanovlenie_iskodex_4))
-            if self.protokol_iskodex_6 > 0.0:
-                nak_5 = u"административный штраф"
-            else:
-                nak_5 = u"-"
-            num_stat_6 = stat + get_val(self.protokol_description, pref = u', ')
-            summa_8 = get_val(self.protokol_iskodex_6, post = u' руб.') + get_val(self.protokol_iskodex_7, pref = u', ')
-            summa_10 = get_val(self.postanovlenie_iskodex_6)
-            numb_11 = stat
-            date_12 = get_val(self.postanovlenie_iskodex_5)
-            name_13 = u"Постановление о назначении административного штрафа"
-
-        if self.postanovlenie_zakon == '2':          # Иное законодательство
-            if self.protokol_notkodex_summa > 0.0:
-                nak_5 = u"административный штраф"
-            else:
-                nak_5 = u"-"
-            num_stat_6 = u"Иное законадательство" + get_val(self.protokol_description, pref = u', ')
-            summa_8 = get_val(self.protokol_notkodex_summa, post = u' руб.') + get_val(self.protokol_notkodex_date, pref = u', ')
-            summa_10 = get_val(self.postanovlenie_notkodex_summa)
-            numb_11 = get_val(self.postanovlenie_notkodex_num)
-            date_12 = get_val(self.postanovlenie_notkodex_date)
-            name_13 = get_val(self.postanovlenie_notkodex_name)
-
-        # logInfo('*** models.Pid.do_print_xlsx: self.postanovlenie_zakon: %s' % self.postanovlenie_zakon)
-        # logInfo('*** models.Pid.do_print_xlsx: stat: %s' % stat)
-        # logInfo('*** models.Pid.do_print_xlsx: num_stat_6: %s' % num_stat_6)
-        '''        
-        arg = [
-            [u'Принадлежность к железной дороге',  dep_id.rel_railway_id.name_get()[0][1] if dep_id.rel_railway_id else ''],
-            [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
-            [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
-            [u'Надзорный орган', _v1_08_SELECTION_DICT[self.v1_08]],
-            [u'Административное наказание', nak_5 if self.protokol_file else ''],                                                 # 5 строка
-            [u'Номер статьи административного правонарушения', num_stat_6 if self.protokol_file else ''],                         # 6 строка
-            [u'Регламентация (содержание нарушения)', self.act_problematica.name_get()[0][1] if self.act_problematica else ''],       # 7 строка
-            [u'Сумма предъявленного штрафа, руб.', summa_8 if self.protokol_file else ''],                                        # 8 строка
-            [u'Текущее состояние ведения претензионной работы', self.get_pret_state()],              # 9 строка
-            [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
-            [u'№ документа', numb_11 if self.postanovlenie_file else ''],                                                              # 11 строка
-            [u'Дата документа', date_12 if self.postanovlenie_file else ''],                                                           # 12 строка
-            [u'Наименование документа', name_13 if self.postanovlenie_file else ''],                                                   # 13 строка
-            [u'Постановляющая часть', self.postanovlenie_description if self.postanovlenie_description and self.postanovlenie_file else ''],  # 14 строка
-            [u'№, дата ЕАСД', (get_val(self.postanovlenie_num_easd) + get_val(self.postanovlenie_date_easd, pref = u', ')) if self.postanovlenie_file else ''], # 15 строка
-        ]
-        '''
-        arg = [
-            [u'Принадлежность к железной дороге',  get_val_cond(dep_id.rel_railway_id.name_get()[0][1], dep_id.rel_railway_id)],
-            [u'Принадлежность структурного подразделения', _seek_cdir(dep_id).name_get()[0][1]],
-            [u'Подразделение на железной дороге', dep_id.name_get()[0][1]],
-            [u'Надзорный орган', _v1_08_SELECTION_DICT[self.v1_08]],
-            [u'Административное наказание', get_val_cond(nak_5, self.protokol_file)],                                                 # 5 строка
-            [u'Номер статьи административного правонарушения', get_val_cond(num_stat_6, self.protokol_file)],                         # 6 строка
-            [u'Регламентация (содержание нарушения)', get_val_cond(self.act_problematica.name_get()[0][1], self.act_problematica)],       # 7 строка
-            [u'Сумма предъявленного штрафа, руб.', get_val_cond(summa_8, self.protokol_file)],                                        # 8 строка
-            [u'Текущее состояние ведения претензионной работы', self.get_pret_state()],              # 9 строка
-            [u'Фактически оплаченная сумма, руб.', summa_10],                                       # 10 строка
-            [u'№ документа', get_val_cond(numb_11, self.postanovlenie_file)],                                                              # 11 строка
-            [u'Дата документа', get_val_cond(date_12, self.postanovlenie_file)],                                                           # 12 строка
-            [u'Наименование документа', get_val_cond(name_13, self.postanovlenie_file)],                                                   # 13 строка
-            [u'Постановляющая часть', get_val_cond(self.postanovlenie_description, self.postanovlenie_description and self.postanovlenie_file)],  # 14 строка
-            [u'№, дата ЕАСД', get_val_cond((get_val(self.postanovlenie_num_easd) + get_val(self.postanovlenie_date_easd, pref = u', ')), self.postanovlenie_file)], # 15 строка
-        ]
-        r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
 
 ##############################################################################################################
 #
@@ -443,3 +387,18 @@ class Predpisanie(models.Model):
     name = fields.Char(string=u'Описание пункта предписания')
     num = fields.Integer(string=u'Номер пункта предписания')
     deadline = fields.Date(u'Срок исполнения', required=True)
+
+
+class PredPoligon(models.Model):
+    _description=u'Предприятие с его полигонами и суммой, взыскаемой с него'
+    _name='eco.pret_isk.pred_poligon'
+    _rec_name='department_id'
+
+    pid_id = fields.Many2one('eco.pret_isk')
+
+    department_id = fields.Many2one('eco.department', u"Предприятие",
+        default = lambda self: self.env.user.department_id,   # при создании нету self-а в текущем контексте
+    )
+    rel_railway_id = fields.Many2one(related="department_id.rel_railway_id", readonly=True)
+    summa3 = fields.Float(u"Сумма", digits=(10,3))
+    summa4 = fields.Float(u"Сумма", digits=(10,3))

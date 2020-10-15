@@ -83,6 +83,7 @@
                             string="Помощь при работе с ПИД"
                             style="font-weight: bold !important;background-color: lightblue;color: white;"/>
                 </header>
+                <field name="id" invisible="1"/>
                 <field name="tab1_done" invisible="1"/>
                 <field name="tab2_done" invisible="1"/>
                 <field name="tab3_done" invisible="1"/>
@@ -91,12 +92,13 @@
                 <field name="can_see_unlock_tab2" invisible="1"/>
                 <field name="can_see_unlock_tab3" invisible="1"/>
                 <field name="can_see_unlock_tab4" invisible="1"/>
+                <field name="v1_01_changed" invisible="1"/>
                 <notebook>
 
                     <page string="1. Основные сведения">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'1'"
                                 attrs="{'invisible':[('tab1_done','=',True)]}"
-                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                                confirm="После блокировки изменений на вкладке, разблокировать обратно сможет только пользователь с ролью в системе 'Главный инженер'. Если Вы уверены в необходимости блокировки изменений - подтвердите действие"/>
                         <field name="question_mark_block_button1" nolabel="1" class="help_mark_left"/>
                         <button string="Разблокировать" type="object" name="set_tab_done" args="'1'"
                                 attrs="{'invisible':['|', ('can_see_unlock_tab1','=',False), ('tab1_done','=',False)]}"
@@ -104,8 +106,8 @@
                         <group>
                             <field name="name" invisible="1"/>
                             <field name="v1_01" attrs="{'readonly': [('tab1_done','=',True)]}">
-                                <tree create="true">
-                                    <field name="name" string="Предприятие"/>
+                                <tree create="true" editable="bottom">
+                                    <field name="department_id" string="Предприятие"/>
                                     <field name="rel_railway_id" string="Полигон"/>
                                 </tree>
                             </field>
@@ -125,7 +127,7 @@
                     <page string="2. Проблематика">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'2'"
                                 attrs="{'invisible':[('tab2_done','=',True)]}"
-                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                                confirm="После блокировки изменений на вкладке, разблокировать обратно сможет только пользователь с ролью в системе 'Главный инженер'. Если Вы уверены в необходимости блокировки изменений - подтвердите действие"/>
                         <field name="question_mark_block_button2" nolabel="1" class="help_mark_left"/>
                         <button string="Разблокировать" type="object" name="set_tab_done" args="'2'"
                                 attrs="{'invisible':['|', ('can_see_unlock_tab2','=',False), ('tab2_done','=',False)]}"
@@ -151,9 +153,7 @@
                             <group attrs="{'invisible':[('akt_ustranenie_file','=',False)]}" colspan="3" col="3">
                                 <field name="akt_vozrazhenie_name" attrs="{'readonly': [('tab2_done','=',True)]}"/>
                                 <field name="akt_vozrazhenie_file" filename="akt_vozrazhenie_name" nolabel="1" attrs="{'readonly': [('tab2_done','=',True)]}"/>
-                                <!--
-                                <group attrs="{'invisible':[('akt_vozrazhenie_file','!=',False)]}" colspan="3" string="Пункты предписания">
-                                -->
+
                                 <group colspan="3" string="Пункты предписания">
                                     <field name="akt_ustranenie_item_ids" nolabel="1" colspan="2" attrs="{'readonly': [('tab2_done','=',True)]}">
                                         <tree editable="bottom">
@@ -191,7 +191,7 @@
                     <page string="3. Протокол">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'3'"
                                 attrs="{'invisible':[('tab3_done','=',True)]}"
-                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                                confirm="После блокировки изменений на вкладке, разблокировать обратно сможет только пользователь с ролью в системе 'Главный инженер'. Если Вы уверены в необходимости блокировки изменений - подтвердите действие"/>
                         <field name="question_mark_block_button3" nolabel="1" class="help_mark_left"/>
                         <button string="Разблокировать" type="object" name="set_tab_done" args="'3'"
                                 attrs="{'invisible':['|', ('can_see_unlock_tab3','=',False), ('tab3_done','=',False)]}"
@@ -219,6 +219,14 @@
                                     <group colspan="1">
                                         <field name="protokol_iskodex_5" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_6" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <h4 attrs="{'invisible':[('v1_01_changed','=',False)]}" colspan="2">Были изменены предприятия. Чтобы отредактировать взыскиваемые суммы, сохраните запись</h4>
+                                        <field name="v1_01_with_sum1" nolabel="1" colspan="2" attrs="{'readonly': [('tab3_done','=',True)], 'invisible':['|', ('v1_01_changed','=',True), ('id','=',False)]}">
+                                            <tree create="false" delete="false" editable="bottom">
+                                                <field name="department_id" string="Предприятие" readonly="1"/>
+                                                <field name="rel_railway_id" string="Полигон" readonly="1"/>
+                                                <field name="summa3"/>
+                                            </tree>
+                                        </field>
                                         <field name="protokol_iskodex_7" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                     </group>
                                 </group>
@@ -230,10 +238,7 @@
                                     <field name="protokol_notkodex_date" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                 </group>
                                 <hr colspan="2"/>
-                                <!--
-                        protokol_is_accepted = fields.Selection([('1', u'Принято к исполнению'), ('2', u'Обжалование и отмена'),
-                                             ('3', u'Обжалование и выполнение'),], default="1")
-                                -->
+
                                 <field name="protokol_is_accepted"
                                        widget="radio"
                                        style="font-weight: bold !important;font-size: 17px;"
@@ -260,7 +265,7 @@
                     <page string="4. Постановление">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'4'"
                                 attrs="{'invisible':[('tab4_done','=',True)]}"
-                                confirm="Разблокировать может только начальник. Вы уверены, что хотите заблокировать?"/>
+                                confirm="После блокировки изменений на вкладке, разблокировать обратно сможет только пользователь с ролью в системе 'Главный инженер'. Если Вы уверены в необходимости блокировки изменений - подтвердите действие"/>
                         <field name="question_mark_block_button4" nolabel="1" class="help_mark_left"/>
                         <button string="Разблокировать" type="object" name="set_tab_done" args="'4'"
                                 attrs="{'invisible':['|', ('can_see_unlock_tab4','=',False), ('tab4_done','=',False)]}"
@@ -292,6 +297,14 @@
                                             <field name="postanovlenie_iskodex_6" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}" style="width:auto"/>
                                             <field name="question_mark_predpisanie_summa" nolabel="1" class="help_mark_left"/>
                                         </span>
+                                        <h4 attrs="{'invisible':[('v1_01_changed','=',False)]}" colspan="2">Были изменены предприятия. Чтобы отредактировать взыскиваемые суммы, сохраните запись</h4>
+                                        <field name="v1_01_with_sum2" nolabel="1" colspan="2" attrs="{'readonly': [('tab4_done','=',True)], 'invisible':['|', ('v1_01_changed','=',True), ('id','=',False)]}">
+                                            <tree create="false" delete="false" editable="bottom">
+                                                <field name="department_id" string="Предприятие" readonly="1"/>
+                                                <field name="rel_railway_id" string="Полигон" readonly="1"/>
+                                                <field name="summa4"/>
+                                            </tree>
+                                        </field>
                                     </group>
                                 </group>
                                 <group attrs="{'invisible':[('postanovlenie_zakon','=','1')]}" colspan="2">
@@ -396,10 +409,6 @@
                 <sheet>
                     <group>
                         <field name="year"/>
-                        <!--
-                        <field name="report_period" widget="radio"/>
-                        <field name="quarter" attrs="{'invisible':[('report_period','=','annual')],'requried':[('report_period','=','quarter')]}"/>
-                        -->
                         <field name="quarter"/>
                     </group>
                 </sheet>

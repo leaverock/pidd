@@ -2,7 +2,7 @@
 import logging
 
 #log = {'__init__':False, '__openerp__':False, 'models':False, 'controllers':True, }
-log = {'__init__':True, '__openerp__':True, 'models':True, 'controllers':True, }
+log = {'__init__':False, '__openerp__':False, 'models':False, 'controllers':True, }
 
 _logger = logging.getLogger(__name__)
 def logInfo(name,val=False):
@@ -15,7 +15,5 @@ def logInfo(name,val=False):
 def logFile(msg):
     with open( u'c:/work/odoo/addons/pid/log.txt', 'at') as f:
         f.write(msg + '\n')
-
-
 
 
