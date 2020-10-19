@@ -28,10 +28,13 @@
                 <field name="id" invisible="1"/>
                 <group>
                     <field name="data_predyavlenia"/>
+                    <field name="department_id"/>
                     <field name="kto_predyavil"/>
                     <field name="predmet_iska" class="text-wrap"/>
                     <field name="osnovanie_iska" class="text-wrap"/>
                     <field name="cena_iska"/>
+                    <field name="narushenie_ohrana"/>
+                    <field name="narushenie_sanitar"/>
                     <field name="meropriyatie"/>
                     <field name="category"/>
                     <field name="state"/>
@@ -48,6 +51,38 @@
                     <field name="kem_obzhalovan"/>
                 </group>
                 <field name="log_ids" attrs="{'invisible':[('id','=',False)]}"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_pid_sud_export" model="ir.actions.act_window">
+        <field name="name">Печать отчёта</field>
+        <field name="res_model">eco.pret_isk.sud.multi.wz</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+    <record id="act_pid_sud_export_form" model="ir.ui.view">
+        <field name="name">Судебная работа Экспорт форма</field>
+        <field name="model">eco.pret_isk.sud.multi.wz</field>
+        <field name="arch" type="xml">
+            <form string="Печать отчёта" version="7.0">
+                <sheet>
+                    <field name="can_see_railway_id"/>
+                    <group>
+                        <field name="year"/>
+                        <field name="quarter"/>
+                        <field name="nakopit"/>
+                        <field name="railway_id" attrs="{'invisible':[('can_see_railway_id','=',False)],'required':[('can_see_railway_id','=',True)]}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Выгрузить в Excel" type="object" class="oe_highlight" name="export_excel"/>
+                    или
+                    <button string="Перейти к перечню" type="action" name="%(eco_pid_action)d"/>
+                </footer>
             </form>
         </field>
     </record>

@@ -28,6 +28,13 @@
 					parent="m_pid_top"
 					action="menu_action_sud"
 				/>
+					<menuitem
+						id="m_pid_sud_export"
+						name="Печать отчёта"
+						parent="m_pid_sud"
+						action="act_pid_sud_export"
+						groups="eco.group_eco_dev_cbt,eco.group_eco_dev_ncop"
+					/>
 
 		<menuitem
 			id="m_docs_refs_problematics"

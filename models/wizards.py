@@ -51,3 +51,32 @@ class PidExportMulti(models.TransientModel):
             ),
             'target': 'self',
         }
+
+
+class PidSudExportMulti(models.TransientModel):
+    _name='eco.pret_isk.sud.multi.wz'
+    _description = u'Визард для экспорта cудебной работы за определёный период'
+
+    year = fields.Selection(get_years_list, u"Выберите год отчёта", default=default_year, required=True)
+    quarter = fields.Selection([('1','I'),('2','II'),('3','III'),('4','IV')], u'Квартал', default='4', required=True)
+    nakopit = fields.Boolean(u"С накоплением")
+    railway_id = fields.Many2one('eco.ref.railway', u"По полигону")
+
+    can_see_railway_id = fields.Boolean(compute="_compute_can_see_railway_id")
+
+    @api.multi
+    def _compute_can_see_railway_id(self):
+        for rec in self:
+            rec.can_see_railway_id = self.env.user.user_role == 'cbt'
+
+    @api.multi
+    def export_excel(self):
+        self.ensure_one()
+        return {
+            'type' : 'ir.actions.act_url',
+            'url': '/pid/sud/export_multi?id=%s&filename=%s' % (
+                self.id,
+                "pret_isk_multi.xlsx",
+            ),
+            'target': 'self',
+        }

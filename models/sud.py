@@ -16,6 +16,7 @@ class SudebnayaRabota(models.Model):
     _rec_name='data_predyavlenia'
 
     data_predyavlenia = fields.Date(u"Дата предъявления судебного иска")
+    department_id = fields.Many2one('eco.department', u"Подразделение", required=True)
     kto_predyavil = fields.Selection([
         ('fiz', u"Физическое лицо"),
         ('yur', u"Юридическое лицо"),
@@ -24,6 +25,8 @@ class SudebnayaRabota(models.Model):
     ], u"Кто предъявил")
     predmet_iska = fields.Char(u"Предмет иска (требования истца об устранении нарушения права)")
     osnovanie_iska = fields.Text(u"Основание иска (отдельные нормы закона и юридические факты, на которых основаны требования искового заявления)")
+    narushenie_ohrana = fields.Boolean(u"Нарушение законодательства в области охраны окружающей среды")
+    narushenie_sanitar = fields.Boolean(u"Нарушение санитарного законодательства")
     cena_iska = fields.Float(u"Цена судебного иска, руб", (10, 3))
     meropriyatie = fields.Text(u"Мероприятие по устранению нарушений")
     category = fields.Char(u"Категория")
