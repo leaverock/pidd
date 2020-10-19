@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..util import  log, logInfo
+from ..util import  log, logInfo, class_info
 
 ###########################################################################################
 #
@@ -13,11 +13,14 @@ my_cell_width = default_cell_width / 4.0
 cell_width = default_cell_width / 4.0
 font_size = 9
 
-# вкладка 1
-tab1_width = 45                     # my_cells_width_calc = 45
-my_cells_width_calc = 45
-tab1_1_cols = 3                     # calc_susha_table_head_cols = 25
-tab1_1_header_height = 4            # calc_susha_header_height = 12
+# таблица 1
+tab1_width = 77
+tab1_cols = 15
+tab1_header_height = 5
+
+tab1_1_cols = 2
+tab1_1_header_height = 4
+
 tab1_2_cols = 5
 tab_1_2_vert_shift = 3              # calc_vozd_vert_shift = 3
 tab1_2_header_height = 5
@@ -97,6 +100,9 @@ def get_report_data_from_record(s):
         _v1_08_SELECTION_DICT = dict(_v1_08_NADZ + _v1_08_PROC)
 
         def _seek_cdir(dep):
+            # class_info('_seek_cdir(dep.department_id)', dep.department_id)
+            # return dep
+
             if dep.role == 'cdir':
                 return dep
             else:
@@ -145,7 +151,7 @@ def get_report_data_from_record(s):
 
         rez = [
             get_val_cond(dep_id.rel_railway_id.name_get()[0][1], dep_id.rel_railway_id),  # 1 строка
-            #_seek_cdir(dep_id).name_get()[0][1],  # 2 строка
+            _seek_cdir(dep_id.department_id).name_get()[0][1],  # 2 строка
             dep_id.name_get()[0][1],  # 3 строка
             _v1_08_SELECTION_DICT[s.v1_08],  # 4 строка
             get_val_cond(nak_5, s.protokol_file),  # 5 строка
@@ -162,14 +168,20 @@ def get_report_data_from_record(s):
         ]
         return rez
 
-
-    if not s.v1_01:
-        raise
+    #
+    # class Empty_v1_01():
+    #     def __init__(self, value):
+    #         self.value = value
+    #     def __str__(self):
+    #         return repr(self.value)
+    #
+    # if not s.v1_01:
+    #     raise (Empty_v1_01("pid.controllers.get_report_data_from_record: field v1_01 empty"))
 
     r = []
-    for dep_id in s.v1_01[0]:
+    for i, dep_id in enumerate(s.v1_01):
         if log['controllers']:
-            logInfo('pid.controllers.utils.get_report_data_from_record: department_id: %s' % (dep_id.department_id.name_get()[0][1]))
+            logInfo('pid.controllers.utils.get_report_data_from_record: department_id [%d]: %s' % (i, dep_id.department_id.name_get()[0][1]))
         r.append(get_data_from_one_dep())
 
     return r

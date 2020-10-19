@@ -5,6 +5,8 @@ from io import BytesIO
 import xlsxwriter
 from ..util import log, logInfo
 from utils import get_report_data_from_record
+from ..controllers.tab_single import tab1_str, table_1_head, table_1_body
+from ..controllers.utils import tab1_width, cell_width
 
 class Binary(http.Controller):
 
@@ -46,6 +48,13 @@ class Binary(http.Controller):
                 form_data = get_report_data_from_record(pid)
                 for i, d in enumerate(form_data):
                     logInfo('controllers.pid_export_multi: form_data (%d): %s' %  (i, d))
+
+        worksheet = workbook.add_worksheet(u'Штрафы за квартал')
+        worksheet.set_column(0, tab1_width - 1, cell_width)
+        r = tab1_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах юридическим лицам за %s квартал %s года' % (wz.quarter, wz.year))
+        r, col_widths = table_1_head(workbook, worksheet, r)
+        for pid in pid_ids:
+            r = table_1_body(workbook, worksheet, r, get_report_data_from_record(pid), col_widths)
 
         workbook.close()
         doc_bytes.seek(0)

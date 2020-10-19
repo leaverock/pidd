@@ -3,7 +3,7 @@ from datetime import datetime
 
 from openerp import api, exceptions, fields, models
 from ..util import logInfo, log
-from ..controllers.tab1 import *
+from ..controllers.tab_single import *
 from ..controllers.utils import *
 
 _v1_08_NADZ = [("nadz", u"Росприроднадзор")]
@@ -334,35 +334,11 @@ class Pid(models.Model):
     ##############################################################################################################
     @api.multi
     def do_print_xlsx(self, workbook):
-
         worksheet = workbook.add_worksheet(u'Штрафы')
         worksheet.set_column(0, tab1_width - 1, cell_width)
-        r = tab1_01_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах на юридическое лицо')
-        r, col_widths = table_1_1_head(workbook, worksheet, r)
-
-        arg = list(zip([
-            u'Принадлежность к железной дороге', # 1 строка
-            u'Принадлежность структурного подразделения', # 2 строка
-            u'Подразделение на железной дороге', # 3 строка
-            u'Надзорный орган', # 4 строка
-            u'Административное наказание', # 5 строка
-            u'Номер статьи административного правонарушения', # 6 строка
-            u'Регламентация (содержание нарушения)', # 7 строка
-            u'Сумма предъявленного штрафа, руб.', # 8 строка
-            u'Текущее состояние ведения претензионной работы', # 9 строка
-            u'Фактически оплаченная сумма, руб.', # 10 строка
-            u'№ документа', # 11 строка
-            u'Дата документа', # 12 строка
-            u'Наименование документа', # 13 строка
-            u'Постановляющая часть', # 14 строка
-            u'№, дата ЕАСД', # 15 строка
-        ], get_report_data_from_record(self)))
-
-        #r = table_1_1_body(workbook, worksheet, r, arg, col_widths)
-
-        if log['controllers']:
-            logInfo('pid.models.models: arg: %s' % arg)
-
+        r = tab1_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах юридическим лицам')
+        r, col_widths = table_1_head(workbook, worksheet, r)
+        r = table_1_body(workbook, worksheet, r, get_report_data_from_record(self), col_widths)
 
 
 ##############################################################################################################

@@ -49,7 +49,8 @@ def table_1_1_body(workbook, worksheet, row, arg, col_widths, dbg = False):
         a = arg [r]
         lng_name = max(len(a[0]), len('%s' % a[1]))
         #height = int (lng_name / 35.0)
-        height = int (lng_name / 65.0)
+        #height = int (lng_name / 65.0)
+        height = int (lng_name / 35.0)
         pos, lng = col_widths[1]
         if dbg: print  ('tab1_proizv_control.table_1_1_body: height: %d, pos: %d, lng: %d' % (height, pos, lng))
         f = {'left': 1, 'right': 1, 'top': 1, 'align': 'center'}
