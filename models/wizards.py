@@ -62,12 +62,10 @@ class PidSudExportMulti(models.TransientModel):
     nakopit = fields.Boolean(u"С накоплением")
     railway_id = fields.Many2one('eco.ref.railway', u"По полигону")
 
-    can_see_railway_id = fields.Boolean(compute="_compute_can_see_railway_id")
+    def _default_can_see_railway_id(self):
+        return self.env.user.id == 1 or self.env.user.user_role == 'cbt'
+    can_see_railway_id = fields.Boolean(default=_default_can_see_railway_id, readonly=True)
 
-    @api.multi
-    def _compute_can_see_railway_id(self):
-        for rec in self:
-            rec.can_see_railway_id = self.env.user.user_role == 'cbt'
 
     @api.multi
     def export_excel(self):

@@ -93,49 +93,54 @@ class Binary(http.Controller):
         sud_ids_rcku = sud_ids.filtered(lambda rec: rec.department_id.role == 'rcku')
         sud_ids_filial = sud_ids - sud_ids_rcku
 
-        grey_cell_format = {
+        grey_cell_format = workbook.add_format({
             'border': 1,
-            'align': 'center',
+            'text_wrap': True,
             'bg_color': '#D9D9D9',
-        }
+        })
     
+        workbook.cell_format.set_align('left')
         rzd_cdir_ids = request.env['eco.department'].sudo().search([('role','=','cdir'),('parent_id.parent_id','=',False)])
         first_col = [
-            (u'1. Количество предъявленных исков  к ОАО «РЖД», шт, в том числе:', grey_cell_format, row0)
-            (u'1.1. Количество обжалованных исков, шт', workbook.cell_format, row1)
-            (u'1.2. Количество отмененных исков, шт', workbook.cell_format, row2)
-            (u'1.3. Количество исков, возмещенных ОАО "РЖД", шт', workbook.cell_format, row3)
-            (u'2. Сумма предъявленных исков, тыс.руб.:', grey_cell_format, row4)
-            (u'2.1. Сумма обжалованных исков, тыс.руб. ', workbook.cell_format, row5)
-            (u'2.2. Сумма отмененных исков, тыс. руб.', workbook.cell_format, row6)
-            (u'2.3. Сумма исков, возмещенных ОАО "РЖД", тыс. руб.', workbook.cell_format, row7)
-            (u'3. Количество судебных решений по искам к ОАО "РЖД", шт', workbook.cell_format, row8)
-            (u'4.Выплачено в целях удовлетворения исковых требований за вред, причиненный в результате нарушения законодательства в области охраны окружающей среды и санитарно-эпидемиологического благополучия населения, всего, тыс. руб.:', grey_cell_format, row9)
-            (u'4.1. В виде денежной компенсации вреда окружающей среде, причиненного нарушением законодательства в области охраны окружающей среды, тыс. руб. ', grey_cell_format, row10)
-            (u'4.2. В виде денежной компенсации вреда  вследствие нарушения санитарного законодательств, тыс. руб. ', workbook.cell_format, row11)
+            (u'1. Количество предъявленных исков  к ОАО «РЖД», шт, в том числе:', grey_cell_format),
+            (u'1.1. Количество обжалованных исков, шт', workbook.cell_format),
+            (u'1.2. Количество отмененных исков, шт', workbook.cell_format),
+            (u'1.3. Количество исков, возмещенных ОАО "РЖД", шт', workbook.cell_format),
+            (u'2. Сумма предъявленных исков, тыс.руб.:', grey_cell_format),
+            (u'2.1. Сумма обжалованных исков, тыс.руб. ', workbook.cell_format),
+            (u'2.2. Сумма отмененных исков, тыс. руб.', workbook.cell_format),
+            (u'2.3. Сумма исков, возмещенных ОАО "РЖД", тыс. руб.', workbook.cell_format),
+            (u'3. Количество судебных решений по искам к ОАО "РЖД", шт', workbook.cell_format),
+            (u'4.Выплачено в целях удовлетворения исковых требований за вред, причиненный в результате нарушения законодательства в области охраны окружающей среды и санитарно-эпидемиологического благополучия населения, всего, тыс. руб.:', grey_cell_format),
+            (u'4.1. В виде денежной компенсации вреда окружающей среде, причиненного нарушением законодательства в области охраны окружающей среды, тыс. руб. ', grey_cell_format),
+            (u'4.2. В виде денежной компенсации вреда  вследствие нарушения санитарного законодательств, тыс. руб. ', workbook.cell_format),
         ]
         def counter_factory(start=0):
             def counter(increment=1):
-                res = couner.counter
+                res = counter.counter
                 counter.counter += increment
                 return res
             counter.counter = 0
             return counter
         getrow = counter_factory(0)
-        worksheet.write(0, 0, u"Информация об удовлетворении исковых требований за вред, причиненный в результате нарушения законодательства в области санитарно-эпидемиологического благополучия населения, охраны окружающей среды и природопользования, за  %s г. по полигону %s железной дороги" % (
+        worksheet.merge_range(0, 0, 0, 3 + len(rzd_cdir_ids), u"Информация об удовлетворении исковых требований за вред, причиненный в результате нарушения законодательства в области санитарно-эпидемиологического благополучия населения, охраны окружающей среды и природопользования, за %s г. по полигону %s железной дороги" % (
             year1,
-            rw_id.name_get()[0][1] or u'<Не указано>'
+            rw_id.short_name.strip() if rw_id and rw_id.short_name else u'<Не указано>'
         ), workbook.title_format)
 
         getcol = counter_factory(0)
-        worksheet.merge_range(2, getcol(0), 3, getcol(1), u"Показатель / наименование региональной дирекции, РЦКУ", header_format)
+        worksheet.merge_range(2, getcol(0), 3, getcol(1), u"Показатель / наименование региональной дирекции, РЦКУ", workbook.header_format)
         vsego_col = getcol(1)
-        worksheet.merge_range(2, vsego_col, 3, vsego_col, u"Всего", header_format)
-        worksheet.merge_range(2, getcol(0), 3, getcol(0) + 1, u"Из них:", header_format)
+        worksheet.merge_range("B3:B4", u"Всего", workbook.header_format)
+        worksheet.merge_range("C3:D3", u"Из них:", workbook.header_format)
         rcku_col = getcol(1)
-        worksheet.write(2, rcku_col, u"РЦКУ", header_format)
+        worksheet.write("C4", u"РЦКУ", workbook.header_format)
         filial_col = getcol(1)
-        worksheet.write(2, filial_col, u"Филиалы", header_format)
+        worksheet.write("D4", u"Филиалы", workbook.header_format)
+
+        worksheet.set_column(0, 0, 42)
+        worksheet.set_row(0, 40)
+        
 
         # vsego_map = {}
         # rcku_map = {}
@@ -201,114 +206,140 @@ class Binary(http.Controller):
         sum_flag2_rest = 0  # Сумма оплаченных исков по флагу 2, филиалы 
 
         for dep_index, dep_id in enumerate(rzd_cdir_ids):
+            worksheet.merge_range(2, 4 + dep_index, 3, 4 + dep_index, dep_id.short_name, workbook.header_format)
             sud_filtered_cdir_ids = sud_ids.filtered(lambda sud: get_cdir(sud.department_id) == dep_id)
-            sud_filtered_cdir_obzha_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.status == 'obzhal')
-            sud_filtered_cdir_otmen_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.status == 'otmen')
-            sud_filtered_cdir_vozme_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.status == 'vozme')
-            sud_filtered_cdir_oplach_flags_ids = sud_filtered_cdir_ids.filtered(lambda sud: 'oplach' in sud.log_ids.mapped('status') and (sud.narushenie_ohrana or sud.narushenie_sanitar))
-            count += len(sud_filtered_cdir_ids)
-            count_obzh += len(sud_filtered_cdir_obzha_ids)
-            count_otme += len(sud_filtered_cdir_otmen_ids)
-            count_vozm += len(sud_filtered_cdir_vozme_ids)
-            sum_pred += sum(sud_filtered_cdir_ids.mapped('cena_iska'))
-            sum_obzh += sum(sud_filtered_cdir_obzha_ids.mapped('cena_iska'))
-            sum_otme += sum(sud_filtered_cdir_otmen_ids.mapped('cena_iska'))
-            sum_vozm += sum(sud_filtered_cdir_vozme_ids.mapped('cena_iska'))
-            count_log += len(sud_filtered_cdir_ids.mapped('log_ids').filtered(lambda log: log.status not in ['na_obzh', 'vozme']))
-            sum_flags += sum(sud_filtered_cdir_oplach_flags_ids.mapped('summa'))
-            sum_flag1 += sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_ohrana).mapped('summa'))
-            sum_flag2 += sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_sanitar).mapped('summa'))
+            sud_filtered_cdir_obzha_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'obzhal')
+            sud_filtered_cdir_otmen_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'otmen')
+            sud_filtered_cdir_vozme_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'vozme')
+            sud_filtered_cdir_oplach_flags_ids = sud_filtered_cdir_ids.filtered(lambda sud: 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar))
+
+            dep_count = len(sud_filtered_cdir_ids)
+            dep_count_obzh = len(sud_filtered_cdir_obzha_ids)
+            dep_count_otme = len(sud_filtered_cdir_otmen_ids)
+            dep_count_vozm = len(sud_filtered_cdir_vozme_ids)
+            dep_sum_pred = sum(sud_filtered_cdir_ids.mapped('cena_iska'))
+            dep_sum_obzh = sum(sud_filtered_cdir_obzha_ids.mapped('cena_iska'))
+            dep_sum_otme = sum(sud_filtered_cdir_otmen_ids.mapped('cena_iska'))
+            dep_sum_vozm = sum(sud_filtered_cdir_vozme_ids.mapped('cena_iska'))
+            dep_count_log = len(sud_filtered_cdir_ids.mapped('log_ids').filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
+            dep_sum_flags = sum(sud_filtered_cdir_oplach_flags_ids.mapped('summa'))
+            dep_sum_flag1 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_ohrana).mapped('summa'))
+            dep_sum_flag2 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_sanitar).mapped('summa'))
+
+            worksheet.write(4, 4 + dep_index, dep_count, workbook.cell_format)
+            worksheet.write(5, 4 + dep_index, dep_count_obzh, workbook.cell_format)
+            worksheet.write(6, 4 + dep_index, dep_count_otme, workbook.cell_format)
+            worksheet.write(7, 4 + dep_index, dep_count_vozm, workbook.cell_format)
+            worksheet.write(8, 4 + dep_index, dep_sum_pred, workbook.cell_format)
+            worksheet.write(9, 4 + dep_index, dep_sum_obzh, workbook.cell_format)
+            worksheet.write(10, 4 + dep_index, dep_sum_otme, workbook.cell_format)
+            worksheet.write(11, 4 + dep_index, dep_sum_vozm, workbook.cell_format)
+            worksheet.write(12, 4 + dep_index, dep_count_log, workbook.cell_format)
+            worksheet.write(13, 4 + dep_index, dep_sum_flags, workbook.cell_format)
+            worksheet.write(14, 4 + dep_index, dep_sum_flag1, workbook.cell_format)
+            worksheet.write(15, 4 + dep_index, dep_sum_flag2, workbook.cell_format)
+
+            count += dep_count
+            count_obzh += dep_count_obzh
+            count_otme += dep_count_otme
+            count_vozm += dep_count_vozm
+            sum_pred += dep_sum_pred
+            sum_obzh += dep_sum_obzh
+            sum_otme += dep_sum_otme
+            sum_vozm += dep_sum_vozm
+            count_log += dep_count_log
+            sum_flags += dep_sum_flags
+            sum_flag1 += dep_sum_flag1
+            sum_flag2 += dep_sum_flag2
             for sud in sud_filtered_cdir_ids:
                 if sud.department_id.role == 'rcku':
                     count_rcku += 1
-                    count_obzh_rcku += 1 sud.status == 'obzhal' else 0
-                    count_otme_rcku += 1 sud.status == 'otmen' else 0
-                    count_vozm_rcku += 1 sud.status == 'vozme' else 0
+                    count_obzh_rcku += 1 if sud.state == 'obzhal' else 0
+                    count_otme_rcku += 1 if sud.state == 'otmen' else 0
+                    count_vozm_rcku += 1 if sud.state == 'vozme' else 0
                     sum_pred_rcku += sud.cena_iska
-                    sum_obzh_rcku += sud.cena_iska if sud.status == 'obzhal' else 0
-                    sum_otme_rcku += sud.cena_iska if sud.status == 'otmen' else 0
-                    sum_vozm_rcku += sud.cena_iska if sud.status == 'vozme' else 0
-                    count_log_rcku += len(sud.log_ids.filtered(lambda log: log.status not in ['na_obzh', 'vozme']))
-                    sum_flags_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('status') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
-                    sum_flag1_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('status') and sud.narushenie_ohrana else 0
-                    sum_flag2_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('status') and sud.narushenie_sanitar else 0
+                    sum_obzh_rcku += sud.cena_iska if sud.state == 'obzhal' else 0
+                    sum_otme_rcku += sud.cena_iska if sud.state == 'otmen' else 0
+                    sum_vozm_rcku += sud.cena_iska if sud.state == 'vozme' else 0
+                    count_log_rcku += len(sud.log_ids.filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
+                    sum_flags_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
+                    sum_flag1_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_ohrana else 0
+                    sum_flag2_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_sanitar else 0
                 else:
                     count_rest += 1
-                    count_obzh_rest += 1 sud.status == 'obzhal' else 0
-                    count_otme_rest += 1 sud.status == 'otmen' else 0
-                    count_vozm_rest += 1 sud.status == 'vozme' else 0
+                    count_obzh_rest += 1 if sud.state == 'obzhal' else 0
+                    count_otme_rest += 1 if sud.state == 'otmen' else 0
+                    count_vozm_rest += 1 if sud.state == 'vozme' else 0
                     sum_pred_rest += sud.cena_iska
-                    sum_obzh_rest += sud.cena_iska if sud.status == 'obzhal' else 0
-                    sum_otme_rest += sud.cena_iska if sud.status == 'otmen' else 0
-                    sum_vozm_rest += sud.cena_iska if sud.status == 'vozme' else 0
-                    count_log_rest += len(sud.log_ids.filtered(lambda log: log.status not in ['na_obzh', 'vozme']))
-                    sum_flags_rest += sud.summa if 'oplach' in sud.log_ids.mapped('status') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
-                    sum_flag1_rest += sud.summa if 'oplach' in sud.log_ids.mapped('status') and sud.narushenie_ohrana else 0
-                    sum_flag2_rest += sud.summa if 'oplach' in sud.log_ids.mapped('status') and sud.narushenie_sanitar else 0
+                    sum_obzh_rest += sud.cena_iska if sud.state == 'obzhal' else 0
+                    sum_otme_rest += sud.cena_iska if sud.state == 'otmen' else 0
+                    sum_vozm_rest += sud.cena_iska if sud.state == 'vozme' else 0
+                    count_log_rest += len(sud.log_ids.filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
+                    sum_flags_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
+                    sum_flag1_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_ohrana else 0
+                    sum_flag2_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_sanitar else 0
 
 
 
-            worksheet.write(5, getcol(1) + dep_index, cdir_count, row[1])
-            
         # row 1
-        worksheet.write(5, 1, count, workbook.cell_format)
-        worksheet.write(5, 2, count_rcku, workbook.cell_format)
-        worksheet.write(5, 3, count_rest, workbook.cell_format)
+        worksheet.write(4, 1, count, workbook.cell_format)
+        worksheet.write(4, 2, count_rcku, workbook.cell_format)
+        worksheet.write(4, 3, count_rest, workbook.cell_format)
             
         # row 2
-        worksheet.write(6, 1, count_obzh, workbook.cell_format)
-        worksheet.write(6, 2, count_obzh_rcku, workbook.cell_format)
-        worksheet.write(6, 3, count_obzh_rest, workbook.cell_format)
+        worksheet.write(5, 1, count_obzh, workbook.cell_format)
+        worksheet.write(5, 2, count_obzh_rcku, workbook.cell_format)
+        worksheet.write(5, 3, count_obzh_rest, workbook.cell_format)
             
         # row 3
-        worksheet.write(7, 1, count_otme, workbook.cell_format)
-        worksheet.write(7, 2, count_otme_rcku, workbook.cell_format)
-        worksheet.write(7, 3, count_otme_rest, workbook.cell_format)
+        worksheet.write(6, 1, count_otme, workbook.cell_format)
+        worksheet.write(6, 2, count_otme_rcku, workbook.cell_format)
+        worksheet.write(6, 3, count_otme_rest, workbook.cell_format)
             
         # row 4
-        worksheet.write(8, 1, count_vozm, workbook.cell_format)
-        worksheet.write(8, 2, count_vozm_rcku, workbook.cell_format)
-        worksheet.write(8, 3, count_vozm_rest, workbook.cell_format)
+        worksheet.write(7, 1, count_vozm, workbook.cell_format)
+        worksheet.write(7, 2, count_vozm_rcku, workbook.cell_format)
+        worksheet.write(7, 3, count_vozm_rest, workbook.cell_format)
             
         # row 5
-        worksheet.write(9, 1, sum_pred, workbook.cell_format)
-        worksheet.write(9, 2, sum_pred_rcku, workbook.cell_format)
-        worksheet.write(9, 3, sum_pred_rest, workbook.cell_format)
+        worksheet.write(8, 1, sum_pred, workbook.cell_format)
+        worksheet.write(8, 2, sum_pred_rcku, workbook.cell_format)
+        worksheet.write(8, 3, sum_pred_rest, workbook.cell_format)
             
         # row 6
-        worksheet.write(10, 1, sum_obzh, workbook.cell_format)
-        worksheet.write(10, 2, sum_obzh_rcku, workbook.cell_format)
-        worksheet.write(10, 3, sum_obzh_rest, workbook.cell_format)
+        worksheet.write(9, 1, sum_obzh, workbook.cell_format)
+        worksheet.write(9, 2, sum_obzh_rcku, workbook.cell_format)
+        worksheet.write(9, 3, sum_obzh_rest, workbook.cell_format)
             
         # row 7
-        worksheet.write(11, 1, sum_otme, workbook.cell_format)
-        worksheet.write(11, 2, sum_otme_rcku, workbook.cell_format)
-        worksheet.write(11, 3, sum_otme_rest, workbook.cell_format)
+        worksheet.write(10, 1, sum_otme, workbook.cell_format)
+        worksheet.write(10, 2, sum_otme_rcku, workbook.cell_format)
+        worksheet.write(10, 3, sum_otme_rest, workbook.cell_format)
             
         # row 8
-        worksheet.write(12, 1, sum_vozm, workbook.cell_format)
-        worksheet.write(12, 2, sum_vozm_rcku, workbook.cell_format)
-        worksheet.write(12, 3, sum_vozm_rest, workbook.cell_format)
+        worksheet.write(11, 1, sum_vozm, workbook.cell_format)
+        worksheet.write(11, 2, sum_vozm_rcku, workbook.cell_format)
+        worksheet.write(11, 3, sum_vozm_rest, workbook.cell_format)
             
         # row 9
-        worksheet.write(13, 1, count_log, workbook.cell_format)
-        worksheet.write(13, 2, count_log_rcku, workbook.cell_format)
-        worksheet.write(13, 3, count_log_rest, workbook.cell_format)
+        worksheet.write(12, 1, count_log, workbook.cell_format)
+        worksheet.write(12, 2, count_log_rcku, workbook.cell_format)
+        worksheet.write(12, 3, count_log_rest, workbook.cell_format)
             
         # row 10
-        worksheet.write(14, 1, sum_flags, workbook.cell_format)
-        worksheet.write(14, 2, sum_flags_rcku, workbook.cell_format)
-        worksheet.write(14, 3, sum_flags_rest, workbook.cell_format)
+        worksheet.write(13, 1, sum_flags, workbook.cell_format)
+        worksheet.write(13, 2, sum_flags_rcku, workbook.cell_format)
+        worksheet.write(13, 3, sum_flags_rest, workbook.cell_format)
             
         # row 11
-        worksheet.write(15, 1, sum_flag1, workbook.cell_format)
-        worksheet.write(15, 2, sum_flag1_rcku, workbook.cell_format)
-        worksheet.write(15, 3, sum_flag1_rest, workbook.cell_format)
+        worksheet.write(14, 1, sum_flag1, workbook.cell_format)
+        worksheet.write(14, 2, sum_flag1_rcku, workbook.cell_format)
+        worksheet.write(14, 3, sum_flag1_rest, workbook.cell_format)
             
         # row 12
-        worksheet.write(16, 1, sum_flag2, workbook.cell_format)
-        worksheet.write(16, 2, sum_flag2_rcku, workbook.cell_format)
-        worksheet.write(16, 3, sum_flag2_rest, workbook.cell_format)
+        worksheet.write(15, 1, sum_flag2, workbook.cell_format)
+        worksheet.write(15, 2, sum_flag2_rcku, workbook.cell_format)
+        worksheet.write(15, 3, sum_flag2_rest, workbook.cell_format)
 
         return workbook.get_response(filename)
 
@@ -325,8 +356,5 @@ class Binary(http.Controller):
                     count_rcku += 1
                 else:
                     count_cdir += 1
-                logInfo("count=%s" % count)
-                logInfo("count_rcku=%s" % count_rcku)
-                logInfo("count_cdir=%s" % count_cdir)
 
             return count, count_rcku, count_cdir

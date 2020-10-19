@@ -16,7 +16,7 @@ class SudebnayaRabota(models.Model):
     _rec_name='data_predyavlenia'
 
     data_predyavlenia = fields.Date(u"Дата предъявления судебного иска")
-    department_id = fields.Many2one('eco.department', u"Подразделение", required=True)
+    department_id = fields.Many2one('eco.department', u"Подразделение", required=True, default=lambda self: self.env.user.department_id)
     kto_predyavil = fields.Selection([
         ('fiz', u"Физическое лицо"),
         ('yur', u"Юридическое лицо"),

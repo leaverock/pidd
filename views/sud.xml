@@ -70,7 +70,7 @@
         <field name="arch" type="xml">
             <form string="Печать отчёта" version="7.0">
                 <sheet>
-                    <field name="can_see_railway_id"/>
+                    <field name="can_see_railway_id" invisible="1"/>
                     <group>
                         <field name="year"/>
                         <field name="quarter"/>
