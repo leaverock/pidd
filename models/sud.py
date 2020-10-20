@@ -3,12 +3,21 @@ from openerp import api, exceptions, fields, models
 from ..util import logInfo, log
 
 _STATE_SELECTION = [
-        ('na_obzh', u'На обжаловании'),
-        ('obzhal', u'Обжалован'),
-        ('otmen', u'Отменен'),
-        ('vozme', u'Возмещен'),
-        ('oplach', u'Оплачен'),
-    ]
+    ('na_obzh', u'На обжаловании'),
+    ('obzhal', u'Обжалован'),
+    ('otmen', u'Отменен'),
+    ('vozme', u'Возмещен'),
+    ('oplach', u'Оплачен'),
+]
+_CATEGORY_SELECTION = [
+    ('environ', u'Нарушения законодательства в области охраны окружающей среды'),
+    ('sanitar', u'Нарушения  в области санитарного законодательства'),
+    ('moral', u'Нарушения личных неимущественных прав (Моральный вред)'),
+]
+_NARUSHENIE_SELECTION = [
+    ('ohrana', u'Нарушение законодательства в области охраны окружающей среды'),
+    ('sanitar', u'Нарушение санитарного законодательства'),
+]
 
 class SudebnayaRabota(models.Model):
     _name='eco.pret_isk.sud'
@@ -25,11 +34,12 @@ class SudebnayaRabota(models.Model):
     ], u"Кто предъявил")
     predmet_iska = fields.Char(u"Предмет иска (требования истца об устранении нарушения права)")
     osnovanie_iska = fields.Text(u"Основание иска (отдельные нормы закона и юридические факты, на которых основаны требования искового заявления)")
-    narushenie_ohrana = fields.Boolean(u"Нарушение законодательства в области охраны окружающей среды")
-    narushenie_sanitar = fields.Boolean(u"Нарушение санитарного законодательства")
+    narushenie = fields.Selection(_NARUSHENIE_SELECTION, u"Нарушение законодательства")
+    # narushenie_ohrana = fields.Boolean(u"Нарушение законодательства в области охраны окружающей среды")
+    # narushenie_sanitar = fields.Boolean(u"Нарушение санитарного законодательства")
     cena_iska = fields.Float(u"Цена судебного иска, руб", (10, 3))
     meropriyatie = fields.Text(u"Мероприятие по устранению нарушений")
-    category = fields.Char(u"Категория")
+    category = fields.Selection(_CATEGORY_SELECTION, u"Категория")
     state = fields.Selection(_STATE_SELECTION, u"Текущая ситуация")
 
     # data_napravleniya = fields.Date(u"Дата направления",    states={'invisible':['na_obzh']})

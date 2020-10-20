@@ -221,7 +221,7 @@ class Binary(http.Controller):
             dep_sum_pred = sum(sud_filtered_cdir_ids.mapped('cena_iska'))
             dep_sum_obzh = sum(sud_filtered_cdir_obzha_ids.mapped('cena_iska'))
             dep_sum_otme = sum(sud_filtered_cdir_otmen_ids.mapped('cena_iska'))
-            dep_sum_vozm = sum(sud_filtered_cdir_vozme_ids.mapped('cena_iska'))
+            dep_sum_vozm = sum(sud_filtered_cdir_vozme_ids.mapped('summa'))
             dep_count_log = len(sud_filtered_cdir_ids.mapped('log_ids').filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
             dep_sum_flags = sum(sud_filtered_cdir_oplach_flags_ids.mapped('summa'))
             dep_sum_flag1 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_ohrana).mapped('summa'))
