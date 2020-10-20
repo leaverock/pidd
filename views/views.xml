@@ -414,8 +414,6 @@
                 </sheet>
                 <footer>
                     <button string="Выгрузить в Excel" type="object" class="oe_highlight" name="export_excel"/>
-                    или
-                    <button string="Перейти к перечню" type="action" name="%(eco_pid_action)d"/>
                 </footer>
             </form>
         </field>
