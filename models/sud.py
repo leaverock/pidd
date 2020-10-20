@@ -34,12 +34,9 @@ class SudebnayaRabota(models.Model):
     ], u"Кто предъявил")
     predmet_iska = fields.Char(u"Предмет иска (требования истца об устранении нарушения права)")
     osnovanie_iska = fields.Text(u"Основание иска (отдельные нормы закона и юридические факты, на которых основаны требования искового заявления)")
-    narushenie = fields.Selection(_NARUSHENIE_SELECTION, u"Нарушение законодательства")
-    # narushenie_ohrana = fields.Boolean(u"Нарушение законодательства в области охраны окружающей среды")
-    # narushenie_sanitar = fields.Boolean(u"Нарушение санитарного законодательства")
+    category = fields.Selection(_CATEGORY_SELECTION, u"Категория", required=True)
     cena_iska = fields.Float(u"Цена судебного иска, руб", (10, 3))
     meropriyatie = fields.Text(u"Мероприятие по устранению нарушений")
-    category = fields.Selection(_CATEGORY_SELECTION, u"Категория")
     state = fields.Selection(_STATE_SELECTION, u"Текущая ситуация")
 
     # data_napravleniya = fields.Date(u"Дата направления",    states={'invisible':['na_obzh']})

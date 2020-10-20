@@ -212,7 +212,7 @@ class Binary(http.Controller):
             sud_filtered_cdir_obzha_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'obzhal')
             sud_filtered_cdir_otmen_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'otmen')
             sud_filtered_cdir_vozme_ids = sud_filtered_cdir_ids.filtered(lambda sud: sud.state == 'vozme')
-            sud_filtered_cdir_oplach_flags_ids = sud_filtered_cdir_ids.filtered(lambda sud: 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar))
+            sud_filtered_cdir_oplach_flags_ids = sud_filtered_cdir_ids.filtered(lambda sud: 'oplach' in sud.log_ids.mapped('state') and sud.category in ['environ', 'sanitar'])
 
             dep_count = len(sud_filtered_cdir_ids)
             dep_count_obzh = len(sud_filtered_cdir_obzha_ids)
@@ -224,8 +224,8 @@ class Binary(http.Controller):
             dep_sum_vozm = sum(sud_filtered_cdir_vozme_ids.mapped('summa'))
             dep_count_log = len(sud_filtered_cdir_ids.mapped('log_ids').filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
             dep_sum_flags = sum(sud_filtered_cdir_oplach_flags_ids.mapped('summa'))
-            dep_sum_flag1 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_ohrana).mapped('summa'))
-            dep_sum_flag2 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.narushenie_sanitar).mapped('summa'))
+            dep_sum_flag1 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.category == 'environ').mapped('summa'))
+            dep_sum_flag2 = sum(sud_filtered_cdir_oplach_flags_ids.filtered(lambda sud: sud.category == 'sanitar').mapped('summa'))
 
             worksheet.write(4, 4 + dep_index, dep_count, workbook.cell_format)
             worksheet.write(5, 4 + dep_index, dep_count_obzh, workbook.cell_format)
@@ -263,9 +263,9 @@ class Binary(http.Controller):
                     sum_otme_rcku += sud.cena_iska if sud.state == 'otmen' else 0
                     sum_vozm_rcku += sud.cena_iska if sud.state == 'vozme' else 0
                     count_log_rcku += len(sud.log_ids.filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
-                    sum_flags_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
-                    sum_flag1_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_ohrana else 0
-                    sum_flag2_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_sanitar else 0
+                    sum_flags_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category in ['environ', 'sanitar'] else 0
+                    sum_flag1_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category == 'environ' else 0
+                    sum_flag2_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category == 'sanitar' else 0
                 else:
                     count_rest += 1
                     count_obzh_rest += 1 if sud.state == 'obzhal' else 0
@@ -276,9 +276,9 @@ class Binary(http.Controller):
                     sum_otme_rest += sud.cena_iska if sud.state == 'otmen' else 0
                     sum_vozm_rest += sud.cena_iska if sud.state == 'vozme' else 0
                     count_log_rest += len(sud.log_ids.filtered(lambda log: log.state not in ['na_obzh', 'vozme']))
-                    sum_flags_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and (sud.narushenie_ohrana or sud.narushenie_sanitar) else 0
-                    sum_flag1_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_ohrana else 0
-                    sum_flag2_rest += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.narushenie_sanitar else 0
+                    sum_flags_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category in ['environ', 'sanitar'] else 0
+                    sum_flag1_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category == 'environ' else 0
+                    sum_flag2_rcku += sud.summa if 'oplach' in sud.log_ids.mapped('state') and sud.category == 'sanitar' else 0
 
 
 

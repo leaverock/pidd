@@ -33,9 +33,6 @@
                     <field name="predmet_iska" class="text-wrap"/>
                     <field name="osnovanie_iska" class="text-wrap"/>
                     <field name="cena_iska"/>
-                    <field name="narushenie" widget="radio" nolabel="1" colspan="2"/>
-                    <!-- <field name="narushenie_ohrana"/>
-                    <field name="narushenie_sanitar"/> -->
                     <field name="meropriyatie"/>
                     <field name="category"/>
                     <field name="state"/>
