@@ -11,17 +11,17 @@
 				parent="m_pid"
 				/>
 				<menuitem
-					id="m_pid_top_export"
-					name="Печать отчёта"
-					parent="m_pid_top"
-					action="act_pid_export"
-				/>
-				<menuitem
 					id="m_enter_pid"
 					name="Административные штрафы"
 					parent="m_pid_top"
 					action="eco_pid_action"
 				/>
+					<menuitem
+						id="m_pid_top_export"
+						name="Печать отчёта"
+						parent="m_enter_pid"
+						action="act_pid_export"
+					/>
 				<menuitem
 					id="m_pid_sud"
 					name="Исковые требования"
