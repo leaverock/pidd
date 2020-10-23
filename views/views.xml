@@ -17,7 +17,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" invisible="1"/>
-                <field name="v0_01"/>
+                <field name="problems_body"/>
+                <field name="problems_category"/>
             </tree>
         </field>
     </record>
@@ -30,7 +31,8 @@
                 <sheet>
                     <group>
                         <field name="name" invisible="1"/>
-                        <field name="v0_01"/>
+                        <field name="problems_body"/>
+                        <field name="problems_category"/>
                     </group>
                 </sheet>
             </form>
@@ -209,8 +211,14 @@
                                 <group string="Краткая суть" colspan="2">
                                     <field name="protokol_description" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                 </group>
-                                <group attrs="{'invisible':[('protokol_zakon','=','2')]}" colspan="2">
+                                <group attrs="{'invisible':[('protokol_zakon','=','other')]}" colspan="2">
                                     <group colspan="1">
+                                        <field name="protokol_iskodex_statia_id" attrs="{'readonly': [('tab3_done','=',True)]}" domain="[('zakon','=',protokol_zakon), ('problem_id','=',act_problematica) ]"/>
+                                        <field name="protokol_iskodex_statia_kind"
+                                               widget="radio"
+                                               nolabel="1"
+                                               colspan="2"
+                                               attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_2" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_3" attrs="{'readonly': [('tab3_done','=',True)]}"/>
@@ -230,7 +238,7 @@
                                         <field name="protokol_iskodex_7" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                     </group>
                                 </group>
-                                <group attrs="{'invisible':[('protokol_zakon','=','1')]}" colspan="2">
+                                <group attrs="{'invisible':[('protokol_zakon','!=','other')]}" colspan="2">
                                     <field name="protokol_notkodex_kind" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                     <field name="protokol_notkodex_num" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                     <field name="protokol_notkodex_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
@@ -285,6 +293,13 @@
                                 </group>
                                 <group attrs="{'invisible':[('postanovlenie_zakon','=','2')]}" colspan="2">
                                     <group colspan="1">
+                                        <field name="postanovlenie_iskodex_statia_id" attrs="{'readonly': [('tab4_done','=',True)]}" domain="[('zakon','=',postanovlenie_zakon), ('problem_id','=',act_problematica) ]"/>
+                                        <field name="postanovlenie_iskodex_statia_kind"
+                                               widget="radio"
+                                               nolabel="1"
+                                               colspan="2"
+                                               attrs="{'readonly': [('tab4_done','=',True)]}"/>
+
                                         <field name="postanovlenie_iskodex_1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                         <field name="postanovlenie_iskodex_2" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                         <field name="postanovlenie_iskodex_3" attrs="{'readonly': [('tab4_done','=',True)]}"/>

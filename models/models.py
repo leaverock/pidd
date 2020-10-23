@@ -16,22 +16,12 @@ _PRET_STATE_SELECTION_DICT = dict(_PRET_STATE_SELECTION)
 
 help_mark = u'<span>?</span>'
 
-class Problem(models.Model):
-    if log ['models']: logInfo('***** pid.models.Problem: class enter')
-    _name = 'eco.pret_isk.problems'
-    _description = u'Проблематика ПИД'
-    _rec_name="v0_01"
-    name = fields.Char(u"name", default=u'Проблематика ПИД')
-    v0_01 = fields.Char(u"Проблема", required=True)
-
 
 class Pid(models.Model):
-    if log ['models']: logInfo('***** pid.models.Pid: class enter')
     _name = 'eco.pret_isk'
     _description = u'Претензионно-исковая деятельность'
     name = fields.Char(u"_rec_name", default=u'ПИД')
     creator_department_id = fields.Many2one('eco.department', related="create_uid.department_id")
-    # pret_state = fields.Selection(_PRET_STATE_SELECTION_DICT)
 
     @api.multi
     def download_help(self):
@@ -44,9 +34,7 @@ class Pid(models.Model):
 
 
     def search(self, cr, uid, domain, *args, **kwargs):
-        '''
-        В журнале у пользователя должны отображаться только отчёты его предприятия и дочерних
-        '''
+        # В журнале у пользователя должны отображаться только отчёты его предприятия и дочерних
         dep_ids = self.pool['eco.department'].search(cr, uid, [])
         domain += [('creator_department_id', 'in', dep_ids)]
         res = super(Pid, self).search(cr, uid, domain, *args, **kwargs)
@@ -93,9 +81,6 @@ class Pid(models.Model):
     #  Переменные вкладки "1. Основные сведения" представления' модуля eco.pret_isk'
     #
     ##############################################################################################################
-
-
-
     v1_01_changed = fields.Boolean()
     v1_01_with_sum1 = fields.One2many(related="v1_01")
     v1_01_with_sum2 = fields.One2many(related="v1_01")
@@ -117,8 +102,6 @@ class Pid(models.Model):
         vals.pop('v1_01_with_sum2', None)
         vals['v1_01_changed'] = False
         return super(Pid, self).create(vals)
-
-
 
     v1_01 = fields.One2many(
         'eco.pret_isk.pred_poligon',
@@ -180,8 +163,19 @@ class Pid(models.Model):
     protokol_file = fields.Binary(u"Протокол")
     protokol_filename = fields.Char(u"Протокол")
     protokol_description = fields.Text(u"Краткая суть")
-    #protokol_date = fields.Date(u"Дата")
-    protokol_zakon = fields.Selection([('1', u'КОаП РФ'), ('2', u'Иное законодательство'),], default="1")
+    protokol_zakon = fields.Selection([
+        ('koap', u'КОаП РФ'),
+        ('obl', u'Кодекс Московской области об административных правонарушениях'),
+        ('msk', u'Кодекс г. Москвы об административных правонарушениях'),
+        ('other', u'Иное законодательство')
+        ], default="koap")
+    protokol_iskodex_statia_id = fields.Many2one('eco.pret_isk.statia', u"Статья")
+    protokol_iskodex_statia_kind = fields.Selection([
+            ('1', u'Нарушения в области санитарного законодательства'),
+            ('2', u'Нарушения законодательства в области охраны окружающей среды'),
+                            ],
+            default="1",
+            string=u"Тип статьи")
     protokol_iskodex_1 = fields.Integer(u"Ст. №")
     protokol_iskodex_2 = fields.Integer(u"ч. №")
     protokol_iskodex_3 = fields.Integer(u"п. №")
@@ -219,6 +213,24 @@ class Pid(models.Model):
     protokol_obj_exec_file = fields.Binary(u"Обжалование и выполнение")
     protokol_obj_exec_name = fields.Char(u"Обжалование и выполнение")
 
+    @api.onchange('protokol_iskodex_statia_id')
+    def _onchange_protokol_iskodex_statia_id(self):
+        self.protokol_description = self.protokol_iskodex_statia_id.name
+        self.protokol_iskodex_statia_kind = self.protokol_iskodex_statia_id.kind
+        self.protokol_iskodex_1 = self.protokol_iskodex_statia_id.nomer
+        self.protokol_iskodex_2 = self.protokol_iskodex_statia_id.chast
+        self.protokol_iskodex_3 = self.protokol_iskodex_statia_id.punkt
+        self.protokol_iskodex_4 = self.protokol_iskodex_statia_id.ppunkt
+
+    @api.onchange('protokol_zakon', 'act_problematica')
+    def _onchange_protokol_zakon(self):
+        self.protokol_iskodex_statia_id = False
+        self.protokol_description = ""
+        self.protokol_iskodex_1 = 0
+        self.protokol_iskodex_2 = 0
+        self.protokol_iskodex_3 = 0
+        self.protokol_iskodex_4 = 0
+
     
     ##############################################################################################################
     #
@@ -229,8 +241,20 @@ class Pid(models.Model):
     postanovlenie_filename = fields.Char(u"Предписание")
     postanovlenie_description = fields.Text(u"Краткая суть")
     postanovlenie_date = fields.Date(u"Дата")
-    postanovlenie_zakon = fields.Selection([('1', u'КОаП РФ'), ('2', u'Иное законодательство'),], default="1")
+    #postanovlenie_zakon = fields.Selection([('1', u'КОаП РФ'), ('2', u'Иное законодательство'),], default="1")
+    postanovlenie_zakon = fields.Selection([
+        ('koap', u'КОаП РФ'),
+        ('obl', u'Кодекс Московской области об административных правонарушениях'),
+        ('msk', u'Кодекс г. Москвы об административных правонарушениях'),
+        ('other', u'Иное законодательство')
+        ], default="koap")
 
+    postanovlenie_iskodex_statia_id = fields.Many2one('eco.pret_isk.statia', u"Статья")
+    postanovlenie_iskodex_statia_kind = fields.Selection([
+            ('1', u'Нарушения в области санитарного законодательства'),
+            ('2', u'Нарушения законодательства в области охраны окружающей среды'), ],
+            default="1",
+            string=u"Тип статьи")
     postanovlenie_iskodex_1 = fields.Integer(u"Ст. №")
     postanovlenie_iskodex_2 = fields.Integer(u"ч. №")
     postanovlenie_iskodex_3 = fields.Integer(u"п. №")
@@ -269,6 +293,25 @@ class Pid(models.Model):
 
     postanovlenie_obj_exec_file = fields.Binary(u"Обжалование и выполнение")
     postanovlenie_obj_exec_name = fields.Char(u"Обжалование и выполнение")
+
+    @api.onchange('postanovlenie_iskodex_statia_id')
+    def _onchange_postanovlenie_iskodex_statia_id(self):
+        self.postanovlenie_description = self.postanovlenie_iskodex_statia_id.name
+        self.postanovlenie_iskodex_statia_kind = self.postanovlenie_iskodex_statia_id.kind
+        self.postanovlenie_iskodex_1 = self.postanovlenie_iskodex_statia_id.nomer
+        self.postanovlenie_iskodex_2 = self.postanovlenie_iskodex_statia_id.chast
+        self.postanovlenie_iskodex_3 = self.postanovlenie_iskodex_statia_id.punkt
+        self.postanovlenie_iskodex_4 = self.postanovlenie_iskodex_statia_id.ppunkt
+
+    @api.onchange('postanovlenie_zakon', 'act_problematica')
+    def _onchange_postanovlenie_zakon(self):
+        self.postanovlenie_iskodex_statia_id = False
+        self.postanovlenie_description = ""
+        self.postanovlenie_iskodex_statia_kind = False
+        self.postanovlenie_iskodex_1 = 0
+        self.postanovlenie_iskodex_2 = 0
+        self.postanovlenie_iskodex_3 = 0
+        self.postanovlenie_iskodex_4 = 0
 
     @api.multi
     def get_pret_state(self):
@@ -378,3 +421,32 @@ class PredPoligon(models.Model):
     rel_railway_id = fields.Many2one(related="department_id.rel_railway_id", readonly=True)
     summa3 = fields.Float(u"Сумма", digits=(10,3))
     summa4 = fields.Float(u"Сумма", digits=(10,3))
+
+
+class Problem(models.Model):
+    _name = 'eco.pret_isk.problems'
+    _description = u'Проблематика ПИД'
+    _rec_name = "problems_body"
+    statia_ids = fields.One2many('eco.pret_isk.statia', 'problem_id', u"Статьи")
+
+    name = fields.Char(u"name", default=u'Проблематика ПИД')
+    problems_body = fields.Char(u"ПРОБЛЕМАТИКА", required=True)
+    problems_category = fields.Integer(u"КАТЕГОРИЯ указана из Приложения № 2 (Анализ обращений граждан и надзорных органов)", required=True)
+
+
+class Statia(models.Model):
+    _name = 'eco.pret_isk.statia'
+    _description = u'Статьи КОАП, законов Москвы и МО'
+    problem_id = fields.Many2one('eco.pret_isk.problems')
+
+    name = fields.Char(u"Наименование статьи")
+    nomer = fields.Integer(u"Ст. №")
+    chast = fields.Integer(u"ч. №")
+    punkt = fields.Integer(u"п. №")
+    ppunkt = fields.Integer(u"пп. №")
+    zakon = fields.Char(u"Закон")
+    kind = fields.Selection([
+            ('1', u'Нарушения в области санитарного законодательства'),
+            ('2', u'Нарушения законодательства в области охраны окружающей среды'), ],
+            default="1",
+            string=u"Тип статьи")
