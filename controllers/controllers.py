@@ -70,7 +70,7 @@ class Binary(http.Controller):
 
     @http.route('/pid/sud/export_multi', type='http', auth="user")
     @serialize_exception
-    def pid_export_multi(self, id, filename, **kw):
+    def pid_sud_export_multi(self, id, filename, **kw):
 
         request = http.request
         wz = request.env['eco.pret_isk.sud.multi.wz'].search([('id', '=', id)])
