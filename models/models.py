@@ -440,10 +440,10 @@ class Statia(models.Model):
     problem_id = fields.Many2one('eco.pret_isk.problems')
 
     name = fields.Char(u"Наименование статьи")
-    nomer = fields.Integer(u"Ст. №")
-    chast = fields.Integer(u"ч. №")
-    punkt = fields.Integer(u"п. №")
-    ppunkt = fields.Integer(u"пп. №")
+    nomer = fields.Integer(u"Ст. №", default=0)
+    chast = fields.Integer(u"ч. №", default=0)
+    punkt = fields.Integer(u"п. №", default=0)
+    ppunkt = fields.Integer(u"пп. №", default=0)
     zakon = fields.Char(u"Закон")
     kind = fields.Selection([
             ('1', u'Нарушения в области санитарного законодательства'),
