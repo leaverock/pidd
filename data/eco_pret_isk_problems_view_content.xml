@@ -76,7 +76,7 @@
         <!--
         Статьи законов, относящихся к различным проблемам
         -->
-        <!-- Проблема 1 -->
+        <!-- Проблема 0, статьи 0-4 -->
         <record id="eco_pid_statia_0" model="eco.pret_isk.statia">
             <field name="problem_id" eval="ref('eco_pid_problems_view_content_0')"/>
             <field name="name">Статья 6.3. Нарушение законодательства в области обеспечения санитарно-эпидемиологического благополучия населения</field>
@@ -132,8 +132,19 @@
             <field name="kind">1</field>
         </record>
 
-        <!-- Проблема 2 -->
-        <record id="eco_pid_statia_1" model="eco.pret_isk.statia">
+        <!-- Проблема 1, статьи 5-16 -->
+        <record id="eco_pid_statia_5" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 8.3. Нарушение правил обращения с пестицидами и агрохимикатами</field>
+            <field name="nomer">8</field>
+            <field name="chast">3</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_6" model="eco.pret_isk.statia">
             <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
             <field name="name">Статья 8.2. Несоблюдение экологических и санитарно-эпидемиологических требований при обращении с отходами производства и потребления, веществами, разрушающими </field>
             <field name="nomer">8</field>
@@ -144,7 +155,980 @@
             <field name="kind">1</field>
         </record>
 
+        <record id="eco_pid_statia_7" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.21. Отсутствие договора на вывоз мусора</field>
+            <field name="nomer">6</field>
+            <field name="chast">21</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">1</field>
+        </record>
 
+        <record id="eco_pid_statia_8" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.11. Ненадлежащее состояние и содержание территории, части 2,3,4</field>
+            <field name="nomer">6</field>
+            <field name="chast">11</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_9" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.4. Ненадлежащее состояние или содержание нежилых зданий, строений, сооружений и объектов малых архитектурных форм, части 2,3</field>
+            <field name="nomer">6</field>
+            <field name="chast">4</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_10" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.2. Складирование и хранение строительных материалов, изделий и конструкций, различной специальной техники, оборудования, машин и механизмов вне отведенных </field>
+            <field name="nomer">6</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_11" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.1. Нарушение чистоты и порядка в местах общественного пользования, массового посещения и отдыха</field>
+            <field name="nomer">6</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_12" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 4.33. Неосуществление раздельного сбора отходов</field>
+            <field name="nomer">4</field>
+            <field name="chast">33</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_13" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 4.42. Нарушение экологических требований по обустройству мест временного хранения отходов</field>
+            <field name="nomer">4</field>
+            <field name="chast">42</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_14" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 4.48. Нарушения в области охраны и рационального использования городских почв</field>
+            <field name="nomer">4</field>
+            <field name="chast">48</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_15" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 6.9. Захламление земельных участков</field>
+            <field name="nomer">6</field>
+            <field name="chast">9</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_16" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_1')"/>
+            <field name="name">Статья 8.10. Нарушение правил санитарного содержания территорий, организации уборки и обеспечения чистоты и порядка в городе Москве</field>
+            <field name="nomer">8</field>
+            <field name="chast">10</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">1</field>
+        </record>
+
+        <!--
+        <record id="eco_pid_statia_XXX" model="eco.pret_isk.statia">                    XXX - # статьи (с 0)
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_YYY')"/>  YYY - # проблемы (с 0)
+            <field name="name">NNN</field>      NNN - имя статьи
+            <field name="nomer">ZZZ</field>     ZZZ - номер статьи
+            <field name="chast">RRR</field>     RRR - часть статьи
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">TTT</field>     TTT - koap, msk, obl
+            <field name="kind">UUU</field>      UUU - 1 (санитария, зелен), 2 (проч)
+        </record>
+        -->
+        <!-- Проблема 2, статьи 17-19  -->
+        <record id="eco_pid_statia_17" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_2')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_18" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_2')"/>
+            <field name="name">Статья 8.6. Порча земель</field>
+            <field name="nomer">8</field>
+            <field name="chast">6</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_19" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_2')"/>
+            <field name="name">Статья 8.7. Невыполнение обязанностей по рекультивации земель, обязательных мероприятий по улучшению земель и охране почв</field>
+            <field name="nomer">8</field>
+            <field name="chast">7</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 3, статья 20  -->
+        <record id="eco_pid_statia_20" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_3')"/>
+            <field name="name">Статья 8.41. Невнесение в установленные сроки платы за негативное воздействие на окружающую среду</field>
+            <field name="nomer">8</field>
+            <field name="chast">41</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 4, статьи 21-24  -->
+        <record id="eco_pid_statia_21" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_4')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_22" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_4')"/>
+            <field name="name">Статья 8.2. Несоблюдение экологических и санитарно-эпидемиологических требований при обращении с отходами производства и потребления, веществами, разрушающими озоновый слой, или иными опасными веществами</field>
+            <field name="nomer">8</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_23" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_4')"/>
+            <field name="name">Статья 8.21. Нарушение правил охраны атмосферного воздуха</field>
+            <field name="nomer">8</field>
+            <field name="chast">21</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_24" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_4')"/>
+            <field name="name">Статья 8.15. Нарушение правил эксплуатации водохозяйственных или водоохранных сооружений и устройств</field>
+            <field name="nomer">8</field>
+            <field name="chast">15</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 5, статья 25  -->
+        <record id="eco_pid_statia_25" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_5')"/>
+            <field name="name">Статья 6.3. Нарушение законодательства в области обеспечения санитарно-эпидемиологического благополучия населения</field>
+            <field name="nomer">6</field>
+            <field name="chast">3</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">1</field>
+        </record>
+
+        <!-- Проблема 6, статья 26 -->
+        <record id="eco_pid_statia_26" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_6')"/>
+            <field name="name">Статья 6.3. Нарушение законодательства в области обеспечения санитарно-эпидемиологического благополучия населения</field>
+            <field name="nomer">6</field>
+            <field name="chast">3</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">1</field>
+        </record>
+
+        <!-- Проблема 7, статьи 27-28  -->
+        <record id="eco_pid_statia_27" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_7')"/>
+            <field name="name">Статья 8.2. Несоблюдение экологических и санитарно-эпидемиологических требований при обращении с отходами производства и потребления, веществами, разрушающими озоновый слой, или иными опасными веществами</field>
+            <field name="nomer">8</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_28" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_7')"/>
+            <field name="name">Статья 4.4. Нарушение экологических требований при эксплуатации очистных сооружений и сетей ливневой канализации</field>
+            <field name="nomer">4</field>
+            <field name="chast">4</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 8, статьи 29-32  -->
+        <record id="eco_pid_statia_29" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_8')"/>
+            <field name="name">Статья 7.15. Несанкционированный сброс воды, жидких производственных и бытовых отходов в подземные инженерные коммуникации и сооружения</field>
+            <field name="nomer">7</field>
+            <field name="chast">15</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_30" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_8')"/>
+            <field name="name">Статья 7.14. Засорение подземных инженерных коммуникаций и сооружений</field>
+            <field name="nomer">7</field>
+            <field name="chast">14</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_31" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_8')"/>
+            <field name="name">Статья 8.15. Нарушение правил эксплуатации водохозяйственных или водоохранных сооружений и устройств</field>
+            <field name="nomer">8</field>
+            <field name="chast">15</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_32" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_8')"/>
+            <field name="name">Статья 7.7. Повреждение объектов и систем водоснабжения, водоотведения, гидротехнических сооружений, устройств и установок водохозяйственного и водоохранного назначения</field>
+            <field name="nomer">7</field>
+            <field name="chast">7</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 9, статьи 33-34  -->
+        <record id="eco_pid_statia_33" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_9')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_34" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_9')"/>
+            <field name="name">Статья 8.21. Нарушение правил охраны атмосферного воздуха</field>
+            <field name="nomer">8</field>
+            <field name="chast">21</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 10, статьи 35-45  -->
+        <record id="eco_pid_statia_35" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 7.9. Самовольное занятие лесных участков</field>
+            <field name="nomer">7</field>
+            <field name="chast">9</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_36" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.25. Нарушение правил использования лесов</field>
+            <field name="nomer">8</field>
+            <field name="chast">25</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_37" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.26. Самовольное использование лесов, нарушение правил использования лесов для ведения сельского хозяйства, уничтожение лесных ресурсов</field>
+            <field name="nomer">8</field>
+            <field name="chast">26</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_38" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.27. Нарушение требований лесного законодательства по воспроизводству лесов и лесоразведению</field>
+            <field name="nomer">8</field>
+            <field name="chast">27</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_39" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.28. Незаконная рубка, повреждение лесных насаждений или самовольное выкапывание в лесах деревьев, кустарников, лиан</field>
+            <field name="nomer">8</field>
+            <field name="chast">28</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_40" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.28.1. Нарушение требований лесного законодательства об учете древесины и сделок с ней (введена Федеральным законом от 28.12.2013 N 415-ФЗ)</field>
+            <field name="nomer">8</field>
+            <field name="chast">28</field>
+            <field name="punkt">1</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_41" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.30. Уничтожение лесной инфраструктуры, а также сенокосов, пастбищ</field>
+            <field name="nomer">8</field>
+            <field name="chast">30</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_42" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.31. Нарушение правил санитарной безопасности в лесах</field>
+            <field name="nomer">8</field>
+            <field name="chast">31</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_43" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.32. Нарушение правил пожарной безопасности в лесах</field>
+            <field name="nomer">8</field>
+            <field name="chast">32</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_44" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.32.1. Ненаправление, несвоевременное направление, направление недостоверной информации в федеральный орган исполнительной власти, уполномоченный на ведение реестра недобросовестных арендаторов лесных участков и покупателей лесных насаждений</field>
+            <field name="nomer">8</field>
+            <field name="chast">32</field>
+            <field name="punkt">1</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_45" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_10')"/>
+            <field name="name">Статья 8.45.1. Нарушение режима осуществления хозяйственной и иной деятельности в лесопарковом зеленом поясе</field>
+            <field name="nomer">8</field>
+            <field name="chast">45</field>
+            <field name="punkt">1</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 11, статьи 46-47  -->
+        <record id="eco_pid_statia_46" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_11')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_47" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_11')"/>
+            <field name="name">Статья 8.2. Несоблюдение экологических и санитарно-эпидемиологических требований при обращении с отходами производства и потребления, веществами, разрушающими озоновый слой, или иными опасными веществами</field>
+            <field name="nomer">8</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 12, статьи 48-56  -->
+        <record id="eco_pid_statia_48" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_49" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 8.14. Нарушение правил водопользования</field>
+            <field name="nomer">8</field>
+            <field name="chast">14</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_50" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 8.13. Нарушение правил охраны водных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">13</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_51" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 8.15. Нарушение правил эксплуатации водохозяйственных или водоохранных сооружений и устройств</field>
+            <field name="nomer">8</field>
+            <field name="chast">15</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_52" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 8.38. Нарушение правил охраны водных биологических ресурсов</field>
+            <field name="nomer">8</field>
+            <field name="chast">38</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_53" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 4.3. Загрязнение вод в границах природного комплекса города Москвы</field>
+            <field name="nomer">4</field>
+            <field name="chast">3</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_54" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 4.4. Нарушение экологических требований при эксплуатации очистных сооружений и сетей ливневой канализации</field>
+            <field name="nomer">4</field>
+            <field name="chast">4</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_55" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 4.5. Сброс или поступление иным способом загрязняющих веществ на рельеф местности</field>
+            <field name="nomer">4</field>
+            <field name="chast">5</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_56" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_12')"/>
+            <field name="name">Статья 4.2. Нарушение режимов охраны и использования особо охраняемых природных территорий регионального значения в городе Москве, а также их охранных зон</field>
+            <field name="nomer">4</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 13, статья 57  -->
+        <record id="eco_pid_statia_57" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_13')"/>
+            <field name="name">Статья 7.6. Самовольное занятие водного объекта или пользование им с нарушением установленных условий</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 14, статья 58  -->
+        <record id="eco_pid_statia_58" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_14')"/>
+            <field name="name">Статья 8.5. Сокрытие или искажение экологической информации</field>
+            <field name="nomer">8</field>
+            <field name="chast">5</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 15, статьи 59-60 -->
+        <record id="eco_pid_statia_59" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_15')"/>
+            <field name="name">Статья 8.29. Уничтожение мест обитания животных</field>
+            <field name="nomer">8</field>
+            <field name="chast">29</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_60" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_15')"/>
+            <field name="name">Статья 8.35. Уничтожение редких и находящихся под угрозой исчезновения видов животных или растений и т.д.</field>
+            <field name="nomer">8</field>
+            <field name="chast">35</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <!-- Проблема 16, статьи 61-92 -->
+        <record id="eco_pid_statia_61" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 6.5. Нарушение санитарно-эпидемиологических требований к питьевой воде</field>
+            <field name="nomer">6</field>
+            <field name="chast">5</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">1</field>
+        </record>
+
+        <record id="eco_pid_statia_62" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 7.3. Пользование недрами без лицензии на пользование недрами либо с нарушением условий, предусмотренных лицензией на пользование недрами, и (или) требований утвержденных в установленном порядке технических проектов</field>
+            <field name="nomer">7</field>
+            <field name="chast">3</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_63" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 7.20. Самовольное подключение к централизованным системам водоснабжения и водоотведения</field>
+            <field name="nomer">7</field>
+            <field name="chast">20</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_64" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.1. Несоблюдение экологических требований при осуществлении градостроительной деятельности и эксплуатации предприятий, сооружений или иных объектов</field>
+            <field name="nomer">8</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_65" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.4. Нарушение законодательства об экологической экспертизе</field>
+            <field name="nomer">8</field>
+            <field name="chast">4</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_66" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.8. Использование земельных участков не по целевому назначению, невыполнение обязанностей по приведению земель в состояние, пригодное для использования по целевому назначению</field>
+            <field name="nomer">8</field>
+            <field name="chast">8</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_67" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.9. Нарушение требований по охране недр и гидроминеральных ресурсов</field>
+            <field name="nomer">8</field>
+            <field name="chast">9</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_68" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.12. Нарушение режима использования земельных участков и лесов в водоохранных зонах</field>
+            <field name="nomer">8</field>
+            <field name="chast">12</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_69" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.33. Нарушение правил охраны среды обитания или путей миграции объектов животного мира и водных биологических ресурсов</field>
+            <field name="nomer">8</field>
+            <field name="chast">33</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_70" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.39. Нарушение правил охраны и использования природных ресурсов на особо охраняемых природных территориях</field>
+            <field name="nomer">8</field>
+            <field name="chast">39</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_71" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.42. Нарушение специального режима осуществления хозяйственной и иной деятельности на прибрежной защитной полосе водного объекта, водоохранной зоны водного объекта либо режима осуществления хозяйственной и иной деятельности на территории зоны санитарной охраны источников питьевого и хозяйственно-бытового водоснабжения</field>
+            <field name="nomer">8</field>
+            <field name="chast">42</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_72" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.44. Нарушение режима осуществления хозяйственной и иной деятельности в границах зон затопления, подтопления</field>
+            <field name="nomer">8</field>
+            <field name="chast">44</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_73" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.45. Невыполнение требований по оборудованию хозяйственных и иных объектов, расположенных в границах водоохранных зон, сооружениями, обеспечивающими охрану водных объектов от загрязнения, засорения, заиления и истощения вод</field>
+            <field name="nomer">8</field>
+            <field name="chast">45</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_74" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 8.46. Невыполнение или несвоевременное выполнение обязанности по подаче заявки на постановку на государственный учет объектов, оказывающих негативное воздействие на окружающую среду, представлению сведений для актуализации учетных сведений</field>
+            <field name="nomer">8</field>
+            <field name="chast">46</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_75" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 9.5. Нарушение установленного порядка строительства, реконструкции, капитального ремонта объекта капитального строительства, ввода его в эксплуатацию</field>
+            <field name="nomer">9</field>
+            <field name="chast">5</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_76" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 14.48. Представление недостоверных результатов исследований (испытаний)</field>
+            <field name="nomer">14</field>
+            <field name="chast">48</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_77" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 19.5.Невыполнение в срок законного предписания (постановления, представления, решения) органа (должностного лица), осуществляющего государственный надзор (контроль), муниципальный контроль</field>
+            <field name="nomer">19</field>
+            <field name="chast">5</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_78" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 20.25.Уклонение от исполнения административного наказания</field>
+            <field name="nomer">20</field>
+            <field name="chast">25</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">koap</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_79" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 6.15. Повреждение или уничтожение зеленых насаждений</field>
+            <field name="nomer">6</field>
+            <field name="chast">15</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_80" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 9.1. Административная ответственность в области охраны и использования объектов животного и растительного мира, занесенных в Красную книгу Московской области</field>
+            <field name="nomer">9</field>
+            <field name="chast">1</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_81" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 9.2. Нарушение порядка ведения кадастра отходов Московской области</field>
+            <field name="nomer">9</field>
+            <field name="chast">2</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">obl</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_82" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.12. Нарушение требований в области охраны окружающей среды при осуществлении градостроительной и иных видов деятельности</field>
+            <field name="nomer">4</field>
+            <field name="chast">12</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_83" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.16. Невыполнение требований по проведению компенсационного озеленения</field>
+            <field name="nomer">4</field>
+            <field name="chast">16</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_84" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.18. Повреждение зеленых насаждений</field>
+            <field name="nomer">4</field>
+            <field name="chast">18</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_85" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.19. Незаконное уничтожение зеленых насаждений</field>
+            <field name="nomer">4</field>
+            <field name="chast">19</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+
+        <record id="eco_pid_statia_86" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.22. Невыполнение условий порубочного билета</field>
+            <field name="nomer">4</field>
+            <field name="chast">22</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_87" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Cтатья 4.39. Нарушение правил и требований в области охраны окружающей среды</field>
+            <field name="nomer">4</field>
+            <field name="chast">39</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_88" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.40. Непредставление экологической информации (сведений)</field>
+            <field name="nomer">4</field>
+            <field name="chast">40</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_89" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.17. Нарушение правил создания и содержания зеленых насаждений</field>
+            <field name="nomer">4</field>
+            <field name="chast">17</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+
+        <record id="eco_pid_statia_90" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.21. Уничтожение особо охраняемых объектов животного и растительного мира</field>
+            <field name="nomer">4</field>
+            <field name="chast">21</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_91" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.29. Повреждение информационных щитов</field>
+            <field name="nomer">4</field>
+            <field name="chast">29</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
+
+        <record id="eco_pid_statia_92" model="eco.pret_isk.statia">
+            <field name="problem_id" eval="ref('eco_pid_problems_view_content_16')"/>
+            <field name="name">Статья 4.36. Нарушение порядка ведения Сводного кадастра отходов производства и потребления города Москвы</field>
+            <field name="nomer">4</field>
+            <field name="chast">36</field>
+            <field name="punkt">0</field>
+            <field name="ppunkt">0</field>
+            <field name="zakon">msk</field>
+            <field name="kind">2</field>
+        </record>
 
     </data>
 </openerp>

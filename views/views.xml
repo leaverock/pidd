@@ -97,6 +97,8 @@
                 <field name="v1_01_changed" invisible="1"/>
                 <notebook>
 
+
+                    <!-- Первая вкладка -->
                     <page string="1. Основные сведения">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'1'"
                                 attrs="{'invisible':[('tab1_done','=',True)]}"
@@ -126,6 +128,8 @@
                         </group>
                     </page>
 
+
+                    <!-- Вторая вкладка -->
                     <page string="2. Проблематика">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'2'"
                                 attrs="{'invisible':[('tab2_done','=',True)]}"
@@ -190,6 +194,8 @@
                         </group>
                     </page>
 
+
+                    <!-- Третья вкладка -->
                     <page string="3. Протокол">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'3'"
                                 attrs="{'invisible':[('tab3_done','=',True)]}"
@@ -270,6 +276,8 @@
                         </group>
                     </page>
 
+
+                    <!-- Четвёртая вкладка -->
                     <page string="4. Постановление">
                         <button string="Заблокировать" type="object" name="set_tab_done" args="'4'"
                                 attrs="{'invisible':[('tab4_done','=',True)]}"
@@ -291,7 +299,7 @@
                                 <group string="Краткая суть" colspan="2">
                                     <field name="postanovlenie_description" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                 </group>
-                                <group attrs="{'invisible':[('postanovlenie_zakon','=','2')]}" colspan="2">
+                                <group attrs="{'invisible':[('postanovlenie_zakon','=','other')]}" colspan="2">
                                     <group colspan="1">
                                         <field name="postanovlenie_iskodex_statia_id" attrs="{'readonly': [('tab4_done','=',True)]}" domain="[('zakon','=',postanovlenie_zakon), ('problem_id','=',act_problematica) ]"/>
                                         <field name="postanovlenie_iskodex_statia_kind"
@@ -322,7 +330,7 @@
                                         </field>
                                     </group>
                                 </group>
-                                <group attrs="{'invisible':[('postanovlenie_zakon','=','1')]}" colspan="2">
+                                <group attrs="{'invisible':[('postanovlenie_zakon','!=','other')]}" colspan="2">
                                     <field name="postanovlenie_notkodex_kind" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                     <field name="postanovlenie_notkodex_num" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                     <field name="postanovlenie_notkodex_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
