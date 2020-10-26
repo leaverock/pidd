@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from openerp import api, exceptions, fields, models
+import logging
 
 class FormZO1(models.Model):
     _inherit='eco.form.zo_1'
@@ -9,13 +10,65 @@ class FormZO1(models.Model):
     pid_sum_not_san = fields.Float(u"Выплачено административных штрафов за нарушения в области охраны окружающей среды и природопользования")
     sud_sum_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда окружающей среде, причиненного нарушением законодательства в области охраны окружающей среды")
     sud_sum_not_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда вследствие нарушения санитарно-эпидемиологического законодательства")
-    pull_from_r9 = fields.Boolean(u"Перенести остатки, штрафы и иски по предприятию")
-    diff_pid_sum_san = fields.Float(u"Выплачено административных штрафов за нарушения в области санитарно-эпидемиологического благополучия населения")
-    diff_pid_sum_not_san = fields.Float(u"Выплачено административных штрафов за нарушения в области охраны окружающей среды и природопользования")
-    diff_sud_sum_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда окружающей среде, причиненного нарушением законодательства в области охраны окружающей среды")
-    diff_sud_sum_not_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда вследствие нарушения санитарно-эпидемиологического законодательства")
+    pull_from_r9 = fields.Boolean(u"Перенести остатки, штрафы и иски по предприятию",
+        compute="_compute_pull_from_r9",
+        inverse="_inverse_pull_from_r9"
+    )
+    diff_pid_sum_san = fields.Float(u"Выплачено административных штрафов за нарушения в области санитарно-эпидемиологического благополучия населения",
+        compute="_compute_diff",
+        inverse="_inverse_pull_from_r9"
+    )
+    diff_pid_sum_not_san = fields.Float(u"Выплачено административных штрафов за нарушения в области охраны окружающей среды и природопользования",
+        compute="_compute_diff",
+        inverse="_inverse_pull_from_r9"
+    )
+    diff_sud_sum_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда окружающей среде, причиненного нарушением законодательства в области охраны окружающей среды",
+        compute="_compute_diff",
+        inverse="_inverse_pull_from_r9"
+    )
+    diff_sud_sum_not_san = fields.Float(u"Выплачено в целях удовлетворения исковых требований в виде денежной компенсации вреда вследствие нарушения санитарно-эпидемиологического законодательства",
+        compute="_compute_diff",
+        inverse="_inverse_pull_from_r9"
+    )
 
-    @api.onchange('department_id')
+    @api.multi
+    def _compute_diff(self):
+        for rec in self:
+            zo1_ids = self.env[self._name].search([
+                ('year','=',rec.year),
+                ('quarter','=',rec.quarter),
+                ('department_id','=',rec.department_id.id),
+            ])
+            if not rec.department_id:
+                rec.diff_pid_sum_san = 0
+                rec.diff_pid_sum_not_san = 0
+                rec.diff_sud_sum_san = 0
+                rec.diff_sud_sum_not_san = 0
+            else:
+                zo1_ids = self.env[self._name].search([
+                    ('year','=',rec.year),
+                    ('quarter','=',rec.quarter),
+                    ('department_id','=',rec.department_id.id),
+                ])
+                rec.diff_pid_sum_san = rec.pid_sum_san - sum(zo1_ids.mapped('r9_1_1'))
+                rec.diff_pid_sum_not_san = rec.pid_sum_not_san - sum(zo1_ids.mapped('r9_1_2'))
+                rec.diff_sud_sum_san = rec.sud_sum_san - sum(zo1_ids.mapped('r9_2_1'))
+                rec.diff_sud_sum_not_san = rec.sud_sum_not_san - sum(zo1_ids.mapped('r9_2_2'))
+
+    @api.multi
+    def _compute_pull_from_r9(self):
+        for rec in self:
+            rec.pull_from_r9 = False
+    @api.multi
+    def _inverse_pull_from_r9(self):
+        for rec in self:
+            if rec.pull_from_r9:
+                rec.r9_1_1 = rec.diff_pid_sum_san
+                rec.r9_1_2 = rec.diff_pid_sum_not_san
+                rec.r9_2_1 = rec.diff_sud_sum_san
+                rec.r9_2_2 = rec.diff_sud_sum_not_san
+                
+    @api.onchange('department_id','year','quarter')
     def _onchange_department_id_from_pid(self):
         if self.department_id:
             year1 = self.year
@@ -41,8 +94,8 @@ class FormZO1(models.Model):
             ])
             self.pid_sum_san = sum(pid_ids.filtered(lambda pid: pid.postanovlenie_is_accepted != '2' and pid.postanovlenie_iskodex_statia_kind == '1').mapped('v1_01').mapped('summa4'))
             self.pid_sum_not_san = sum(pid_ids.filtered(lambda pid: pid.postanovlenie_is_accepted != '2' and pid.postanovlenie_iskodex_statia_kind == '2').mapped('v1_01').mapped('summa4'))
-            self.sud_sum_san = sum(sud_ids.filtered(lambda sud: sud.category == 'environ' and sud.is_payed()).mapped('summa'))
-            self.sud_sum_not_san = sum(sud_ids.filtered(lambda sud: sud.category == 'sanitar' and sud.is_payed()).mapped('summa'))
+            self.sud_sum_san = sud_ids.filtered(lambda sud: sud.category == 'environ').get_payed_sum()
+            self.sud_sum_not_san = sud_ids.filtered(lambda sud: sud.category == 'sanitar').get_payed_sum()
             self.diff_pid_sum_san = self.pid_sum_san - sum(zo1_ids.mapped('r9_1_1'))
             self.diff_pid_sum_not_san = self.pid_sum_not_san - sum(zo1_ids.mapped('r9_1_2'))
             self.diff_sud_sum_san = self.sud_sum_san - sum(zo1_ids.mapped('r9_2_1'))
@@ -56,15 +109,3 @@ class FormZO1(models.Model):
             self.diff_pid_sum_not_san = 0
             self.diff_sud_sum_san = 0
             self.diff_sud_sum_not_san = 0
-    
-    @api.multi
-    def write(self, new_vals):
-        pull_from_r9 = new_vals.pop('pull_from_r9', False)
-        if pull_from_r9:
-            new_vals['r9_1_1'] = new_vals.get('diff_pid_sum_san', new_vals.get('r9_1_1', self.r9_1_1))
-            new_vals['r9_1_2'] = new_vals.get('diff_pid_sum_not_san', new_vals.get('r9_1_2', self.r9_1_2))
-            new_vals['r9_2_1'] = new_vals.get('diff_sud_sum_san', new_vals.get('r9_2_1', self.r9_2_1))
-            new_vals['r9_2_2'] = new_vals.get('diff_sud_sum_not_san', new_vals.get('r9_2_2', self.r9_2_2))
-        res = super(FormZO1, self).write(new_vals)
-
-        return res

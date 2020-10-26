@@ -58,13 +58,20 @@ class SudebnayaRabota(models.Model):
 
     @api.multi
     def write(self, new_vals):
+        state = new_vals.get('state', False)
+        summa = new_vals.get('summa', False)
+        # при изменении суммы или состояния
+        if state or summa:
+            for rec in self:
+                # если сумма или состояние стали новыми
+                if rec.state != state or rec.summa != summa:
+                    # создаем запись в логе
+                    self.env['eco.pret_isk.sud.log'].create({
+                        'sud_id': rec.id,
+                        'state': new_vals.get('state', rec.state),
+                        'summa': new_vals.get('summa', rec.summa),
+                    })
         res = super(SudebnayaRabota, self).write(new_vals)
-        for rec in self:
-            self.env['eco.pret_isk.sud.log'].create({
-                'sud_id': rec.id,
-                'state': new_vals.get('state', False),
-                'summa': new_vals.get('summa', False),
-            })
         return res
     
     @api.model
@@ -78,16 +85,26 @@ class SudebnayaRabota(models.Model):
         return res
 
     @api.multi
-    def is_payed(self):
+    def get_payed_sum(self):
         u"""
-        Отсутствие статуса отменён после статуса оплачен в истории
+        Получить последнюю оплаченную сумму из истории, после которой не было статуса отменён
         """
-        res = True
+        res = 0
         for rec in self:
-            statuses = rec.log_ids.sorted(key=lambda log: log.create_date, reverse=True).mapped('state')
-            if statuses.index('oplach') >= statuses.index('otmen'):
-                res = False
-                break
+            log_ids = rec.log_ids.sorted(key=lambda log: log.create_date)
+            otmen_index = -1
+            oplach_index = -1
+            for log_index, log in enumerate(log_ids):
+                if log.state == 'otmen':
+                    otmen_index = log_index
+                elif log.state == 'oplach':
+                    oplach_index = log_index
+            if oplach_index > otmen_index:
+                res += log_ids[oplach_index].summa
+            # if 'oplach' not in statuses or 'oplach' in statuses and 'otmen' in statuses and statuses.index('oplach') >= statuses.index('otmen'):
+            #     res = False
+            #     break
+
         return res
 
 

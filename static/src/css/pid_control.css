@@ -31,3 +31,7 @@
 label.text-wrap {
     white-space: normal !important;
 }
+
+.oe_form_group.has-long-label tbody tr td {
+    width: 50%;
+}

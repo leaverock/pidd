@@ -12,6 +12,7 @@
                     <group
                         string="Данные, введённые в разделе ПИД по предприятию"
                         attrs="{'invisible':['|',('f_has_ns_p_a','=',True),('f_has_ns_dep','=',True)]}"
+                        class="has-long-label"
                     >
                         <field name="pid_sum_san" readonly="1" class="text-wrap"/>
                         <field name="pid_sum_not_san" readonly="1" class="text-wrap"/>
@@ -26,6 +27,7 @@
                     <group
                         string="Остатки выплат по 9 разделу, ещё не отражённые в отчётах промплощадок предприятия по ЗО-1 от указанных в ПИД"
                         attrs="{'invisible':['|',('f_has_ns_p_a','=',True),('f_has_ns_dep','=',True)]}"
+                        class="has-long-label"
                     >
                         <field name="diff_pid_sum_san" class="text-wrap"/>
                         <field name="diff_pid_sum_not_san" class="text-wrap"/>

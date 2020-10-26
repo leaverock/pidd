@@ -51,7 +51,8 @@
                 <field name="log_ids" attrs="{'invisible':[('id','=',False)]}">
                     <tree>
                         <field name="state" />
-                        <field name="create_date" />
+                        <field name="summa" />
+                        <field name="create_date" string="Дата" />
                     </tree>
                 </field>
             </form>
