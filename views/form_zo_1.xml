@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+		
+    <record id="zo_1_form_assembled" model="ir.ui.view">
+        <field name="name">Сводная форма ЗО-1</field>
+        <field name="model">eco.form.zo_1</field>
+        <field name="inherit_id" ref="eco.zo_1_form_assembled" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='adjustment_ids']/.." position="before">
+                    <group
+                        string="Данные, введённые в разделе ПИД по предприятию"
+                        attrs="{'invisible':['|',('f_has_ns_p_a','=',True),('f_has_ns_dep','=',True)]}"
+                    >
+                        <field name="pid_sum_san" readonly="1" class="text-wrap"/>
+                        <field name="pid_sum_not_san" readonly="1" class="text-wrap"/>
+                        <field name="sud_sum_san" readonly="1" class="text-wrap"/>
+                        <field name="sud_sum_not_san" readonly="1" class="text-wrap"/>
+                    </group>
+                    <group
+                        attrs="{'invisible':['|',('f_has_ns_p_a','=',True),('f_has_ns_dep','=',True)]}"
+                    >
+                        <field name="pull_from_r9" class="oe_edit_only"/>
+                    </group>
+                    <group
+                        string="Остатки выплат по 9 разделу, ещё не отражённые в отчётах промплощадок предприятия по ЗО-1 от указанных в ПИД"
+                        attrs="{'invisible':['|',('f_has_ns_p_a','=',True),('f_has_ns_dep','=',True)]}"
+                    >
+                        <field name="diff_pid_sum_san" class="text-wrap"/>
+                        <field name="diff_pid_sum_not_san" class="text-wrap"/>
+                        <field name="diff_sud_sum_san" class="text-wrap"/>
+                        <field name="diff_sud_sum_not_san" class="text-wrap"/>
+                    </group>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</data>
+</openerp>

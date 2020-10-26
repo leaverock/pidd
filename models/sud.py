@@ -77,6 +77,19 @@ class SudebnayaRabota(models.Model):
         })
         return res
 
+    @api.multi
+    def is_payed(self):
+        u"""
+        Отсутствие статуса отменён после статуса оплачен в истории
+        """
+        res = True
+        for rec in self:
+            statuses = rec.log_ids.sorted(key=lambda log: log.create_date, reverse=True).mapped('state')
+            if statuses.index('oplach') >= statuses.index('otmen'):
+                res = False
+                break
+        return res
+
 
 class Log(models.Model):
     _name='eco.pret_isk.sud.log'
