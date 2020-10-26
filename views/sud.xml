@@ -48,7 +48,12 @@
                     <field name="rekvizity"/>
                     <field name="kem_obzhalovan"/>
                 </group>
-                <field name="log_ids" attrs="{'invisible':[('id','=',False)]}"/>
+                <field name="log_ids" attrs="{'invisible':[('id','=',False)]}">
+                    <tree>
+                        <field name="state" />
+                        <field name="create_date" />
+                    </tree>
+                </field>
             </form>
         </field>
     </record>
