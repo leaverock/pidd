@@ -377,6 +377,7 @@ class Pid(models.Model):
     ##############################################################################################################
     @api.multi
     def do_print_xlsx(self, workbook):
+        raise exceptions.Warning(u"Находится в доработке")
         worksheet = workbook.add_worksheet(u'Штрафы')
         worksheet.set_column(0, tab1_width - 1, cell_width)
         r = tab1_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах юридическим лицам')

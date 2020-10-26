@@ -42,6 +42,7 @@ class PidExportMulti(models.TransientModel):
 
     @api.multi
     def export_excel(self):
+        raise exceptions.Warning(u"Находится в доработке")
         self.ensure_one()
         return {
             'type' : 'ir.actions.act_url',
