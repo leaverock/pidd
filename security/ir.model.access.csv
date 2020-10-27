@@ -3,6 +3,8 @@ access_eco_pret_isk_ecolog,eco.pret_isk ecolog,model_eco_pret_isk,eco.group_eco_
 access_eco_pret_isk_attached_files_all,eco.pret_isk.attached_files all,model_eco_pret_isk_attached_files,base.group_user,1,1,1,1
 access_eco_pret_isk_predpisanie_all,eco.pret_isk.predpisanie all,model_eco_pret_isk_predpisanie,base.group_user,1,1,1,1
 access_eco_pret_isk_problems_all,eco.pret_isk.problems all,model_eco_pret_isk_problems,base.group_user,1,1,1,1
+access_eco_pret_isk_pred_poligon_all,eco.pret_isk.pred_poligon all,model_eco_pret_isk_pred_poligon,base.group_user,1,1,1,1
+access_eco_pret_isk_statia_all,eco.pret_isk.statia all,model_eco_pret_isk_statia,base.group_user,1,1,1,1
 
 access_eco_pret_isk_sud_ecolog,eco.pret_isk_sud ecolog,model_eco_pret_isk_sud,eco.group_eco_readonly,1,1,1,1
 access_eco_pret_isk_sud_log_all,eco.pret_isk.sud.log all,model_eco_pret_isk_sud_log,base.group_user,1,1,1,1
