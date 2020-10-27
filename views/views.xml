@@ -217,14 +217,10 @@
                                 <group string="Краткая суть" colspan="2">
                                     <field name="protokol_description" nolabel="1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                 </group>
+
                                 <group attrs="{'invisible':[('protokol_zakon','=','other')]}" colspan="2">
                                     <group colspan="1">
                                         <field name="protokol_iskodex_statia_id" attrs="{'readonly': [('tab3_done','=',True)]}" domain="[('zakon','=',protokol_zakon), ('problem_id','=',act_problematica) ]"/>
-                                        <field name="protokol_iskodex_statia_kind"
-                                               widget="radio"
-                                               nolabel="1"
-                                               colspan="2"
-                                               attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_1" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_2" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_3" attrs="{'readonly': [('tab3_done','=',True)]}"/>
@@ -233,6 +229,29 @@
                                     <group colspan="1">
                                         <field name="protokol_iskodex_5" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                         <field name="protokol_iskodex_6" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                </group>
+                                <group attrs="{'invisible':[('protokol_zakon','!=','other')]}" colspan="2">
+                                    <group colspan="1">
+                                        <field name="protokol_notkodex_kind" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_notkodex_num" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_notkodex_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                    <group colspan="1">
+                                        <field name="protokol_notkodex_date" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                        <field name="protokol_notkodex_summa" attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                </group>
+
+                                <group colspan="2">
+                                    <group colspan="1">
+                                        <field name="protokol_iskodex_statia_kind"
+                                                   widget="radio"
+                                                   nolabel="1"
+                                                   colspan="2"
+                                                   attrs="{'readonly': [('tab3_done','=',True)]}"/>
+                                    </group>
+                                    <group colspan="1">
                                         <h4 attrs="{'invisible':[('v1_01_changed','=',False)]}" colspan="2">Были изменены предприятия. Чтобы отредактировать взыскиваемые суммы, сохраните запись</h4>
                                         <field name="v1_01_with_sum1" nolabel="1" colspan="2" attrs="{'readonly': [('tab3_done','=',True)], 'invisible':['|', ('v1_01_changed','=',True), ('id','=',False)]}">
                                             <tree create="false" delete="false" editable="bottom">
@@ -241,16 +260,9 @@
                                                 <field name="summa3"/>
                                             </tree>
                                         </field>
-                                        <field name="protokol_iskodex_7" attrs="{'readonly': [('tab3_done','=',True)]}"/>
                                     </group>
                                 </group>
-                                <group attrs="{'invisible':[('protokol_zakon','!=','other')]}" colspan="2">
-                                    <field name="protokol_notkodex_kind" attrs="{'readonly': [('tab3_done','=',True)]}"/>
-                                    <field name="protokol_notkodex_num" attrs="{'readonly': [('tab3_done','=',True)]}"/>
-                                    <field name="protokol_notkodex_name" attrs="{'readonly': [('tab3_done','=',True)]}"/>
-                                    <field name="protokol_notkodex_summa" attrs="{'readonly': [('tab3_done','=',True)]}"/>
-                                    <field name="protokol_notkodex_date" attrs="{'readonly': [('tab3_done','=',True)]}"/>
-                                </group>
+
                                 <hr colspan="2"/>
 
                                 <field name="protokol_is_accepted"
@@ -299,15 +311,10 @@
                                 <group string="Краткая суть" colspan="2">
                                     <field name="postanovlenie_description" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                 </group>
+
                                 <group attrs="{'invisible':[('postanovlenie_zakon','=','other')]}" colspan="2">
                                     <group colspan="1">
                                         <field name="postanovlenie_iskodex_statia_id" attrs="{'readonly': [('tab4_done','=',True)]}" domain="[('zakon','=',postanovlenie_zakon), ('problem_id','=',act_problematica) ]"/>
-                                        <field name="postanovlenie_iskodex_statia_kind"
-                                               widget="radio"
-                                               nolabel="1"
-                                               colspan="2"
-                                               attrs="{'readonly': [('tab4_done','=',True)]}"/>
-
                                         <field name="postanovlenie_iskodex_1" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                         <field name="postanovlenie_iskodex_2" attrs="{'readonly': [('tab4_done','=',True)]}"/>
                                         <field name="postanovlenie_iskodex_3" attrs="{'readonly': [('tab4_done','=',True)]}"/>
@@ -320,6 +327,25 @@
                                             <field name="postanovlenie_iskodex_6" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}" style="width:auto"/>
                                             <field name="question_mark_predpisanie_summa" nolabel="1" class="help_mark_left"/>
                                         </span>
+                                    </group>
+                                </group>
+                                <group attrs="{'invisible':[('postanovlenie_zakon','!=','other')]}" colspan="2">
+                                    <field name="postanovlenie_notkodex_kind" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_num" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_date" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    <field name="postanovlenie_notkodex_summa" attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                </group>
+
+                                <group colspan="2">
+                                    <group colspan="1">
+                                        <field name="postanovlenie_iskodex_statia_kind"
+                                               widget="radio"
+                                               nolabel="1"
+                                               colspan="2"
+                                               attrs="{'readonly': [('tab4_done','=',True)]}"/>
+                                    </group>
+                                    <group colspan="1">
                                         <h4 attrs="{'invisible':[('v1_01_changed','=',False)]}" colspan="2">Были изменены предприятия. Чтобы отредактировать взыскиваемые суммы, сохраните запись</h4>
                                         <field name="v1_01_with_sum2" nolabel="1" colspan="2" attrs="{'readonly': [('tab4_done','=',True)], 'invisible':['|', ('v1_01_changed','=',True), ('id','=',False)]}">
                                             <tree create="false" delete="false" editable="bottom">
@@ -330,13 +356,9 @@
                                         </field>
                                     </group>
                                 </group>
-                                <group attrs="{'invisible':[('postanovlenie_zakon','!=','other')]}" colspan="2">
-                                    <field name="postanovlenie_notkodex_kind" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                    <field name="postanovlenie_notkodex_num" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                    <field name="postanovlenie_notkodex_name" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                    <field name="postanovlenie_notkodex_date" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                    <field name="postanovlenie_notkodex_summa" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                </group>
+
+                                <hr colspan="2"/>
+
                                 <field name="postanovlenie_is_accepted"
                                        widget="radio"
                                        style="font-weight: bold !important;font-size: 17px;"

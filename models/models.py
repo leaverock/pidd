@@ -183,7 +183,7 @@ class Pid(models.Model):
 
     protokol_iskodex_5 = fields.Date(u"Дата возбуждения дела об административном правонарушении")
     protokol_iskodex_6 = fields.Float(u"Сумма взыскания")
-    protokol_iskodex_7 = fields.Date(u"Дата")
+    #protokol_iskodex_7 = fields.Date(u"Дата")
 
     protokol_notkodex_kind = fields.Selection(
         [
