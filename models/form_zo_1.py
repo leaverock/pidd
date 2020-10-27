@@ -79,8 +79,8 @@ class FormZO1(models.Model):
                 year2 = str(int(year1) + 1)
                 month2 -= 12
             pid_ids = self.env['eco.pret_isk'].search([
-                ('postanovlenie_notkodex_date', '>=', "%s-%s-01" % (year1, month1)),
-                ('postanovlenie_notkodex_date', '<', "%s-%s-01" % (year2, month2))
+                ('postanovlenie_iskodex_5', '>=', "%s-%s-01" % (year1, month1)),
+                ('postanovlenie_iskodex_5', '<', "%s-%s-01" % (year2, month2))
             ])
             sud_ids = self.env['eco.pret_isk.sud'].search([
                 ('data_predyavlenia', '>=', "%s-%s-01" % (year1, month1)),
