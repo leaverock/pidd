@@ -122,7 +122,7 @@ def get_report_data_from_record(s):
         def get_val(val, pref='', post=''):
             return pref + get_val_cond(val, val) + post
 
-        if s.postanovlenie_zakon == '1':  # КОаП РФ
+        if s.postanovlenie_zakon != 'other':  # koap, msk, obl
             stat = u"Ст. №%s, ч. №%s, п. №%s, пп. №%s" % (
                 get_val(s.postanovlenie_iskodex_1), get_val(s.postanovlenie_iskodex_2),
                 get_val(s.postanovlenie_iskodex_3), get_val(s.postanovlenie_iskodex_4))
@@ -131,32 +131,35 @@ def get_report_data_from_record(s):
             else:
                 nak_5 = u"-"
             num_stat_6 = stat + get_val(s.protokol_description, pref=u', ')
-            summa_8 = get_val(s.protokol_iskodex_6, post=u' руб.') + get_val(s.protokol_iskodex_7, pref=u', ')
+            summa_8 = get_val(s.protokol_iskodex_6, post=u' тыс.руб.') + get_val(s.protokol_iskodex_5, pref=u', ')
             summa_10 = get_val(s.postanovlenie_iskodex_6)
             numb_11 = stat
             date_12 = get_val(s.postanovlenie_iskodex_5)
             name_13 = u"Постановление о назначении административного штрафа"
 
-        if s.postanovlenie_zakon == '2':  # Иное законодательство
+        if s.postanovlenie_zakon == 'other':  # Иное законодательство
             if s.protokol_notkodex_summa > 0.0:
                 nak_5 = u"административный штраф"
             else:
                 nak_5 = u"-"
             num_stat_6 = u"Иное законадательство" + get_val(s.protokol_description, pref=u', ')
-            summa_8 = get_val(s.protokol_notkodex_summa, post=u' руб.') + get_val(s.protokol_notkodex_date, pref=u', ')
+            summa_8 = get_val(s.protokol_notkodex_summa, post=u' тыс.руб.') + get_val(s.protokol_notkodex_date, pref=u', ')
             summa_10 = get_val(s.postanovlenie_notkodex_summa)
             numb_11 = get_val(s.postanovlenie_notkodex_num)
             date_12 = get_val(s.postanovlenie_notkodex_date)
             name_13 = get_val(s.postanovlenie_notkodex_name)
 
+        line1 = dep_id.rel_railway_id.name_get()
+        line2 = _seek_cdir(dep_id.department_id).name_get()
+        line7 = s.act_problematica.name_get()
         rez = [
-            get_val_cond(dep_id.rel_railway_id.name_get()[0][1], dep_id.rel_railway_id),  # 1 строка
-            _seek_cdir(dep_id.department_id).name_get()[0][1],  # 2 строка
-            dep_id.name_get()[0][1],  # 3 строка
+            get_val_cond(line1[0][1] if line1 else u"<Не указано>", dep_id.rel_railway_id),  # 1 строка
+            line2[0][1] if line2 else u"<Не указано>",  # 2 строка
+            dep_id.name_get()[0][1] if dep_id.name_get() else u"<Не указано>",  # 3 строка
             _v1_08_SELECTION_DICT[s.v1_08],  # 4 строка
             get_val_cond(nak_5, s.protokol_file),  # 5 строка
             get_val_cond(num_stat_6, s.protokol_file),  # 6 строка
-            get_val_cond(s.act_problematica.name_get()[0][1], s.act_problematica),  # 7 строка
+            get_val_cond(line7[0][1] if line7 else u"<Не указано>", s.act_problematica),  # 7 строка
             get_val_cond(summa_8, s.protokol_file),  # 8 строка
             s.get_pret_state(),  # 9 строка
             summa_10,  # 10 строка
@@ -168,20 +171,8 @@ def get_report_data_from_record(s):
         ]
         return rez
 
-    #
-    # class Empty_v1_01():
-    #     def __init__(self, value):
-    #         self.value = value
-    #     def __str__(self):
-    #         return repr(self.value)
-    #
-    # if not s.v1_01:
-    #     raise (Empty_v1_01("pid.controllers.get_report_data_from_record: field v1_01 empty"))
-
     r = []
     for i, dep_id in enumerate(s.v1_01):
-        if log['controllers']:
-            logInfo('pid.controllers.utils.get_report_data_from_record: department_id [%d]: %s' % (i, dep_id.department_id.name_get()[0][1]))
         r.append(get_data_from_one_dep())
 
     return r

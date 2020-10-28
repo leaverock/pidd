@@ -182,7 +182,7 @@ class Pid(models.Model):
     protokol_iskodex_4 = fields.Integer(u"пп. №")
 
     protokol_iskodex_5 = fields.Date(u"Дата возбуждения дела об административном правонарушении")
-    protokol_iskodex_6 = fields.Float(u"Сумма взыскания")
+    protokol_iskodex_6 = fields.Float(u"Сумма взыскания, тыс.руб.", digits=(10, 3))
     #protokol_iskodex_7 = fields.Date(u"Дата")
 
     protokol_notkodex_kind = fields.Selection(
@@ -198,7 +198,7 @@ class Pid(models.Model):
     protokol_notkodex_num = fields.Char(u"Номер")
     protokol_notkodex_name = fields.Char(u"Наименование")
     protokol_notkodex_date = fields.Date(u"Дата")
-    protokol_notkodex_summa = fields.Float(u"Сумма взыскания")
+    protokol_notkodex_summa = fields.Float(u"Сумма взыскания, тыс.руб.", digits=(10, 3))
 
     protokol_is_accepted = fields.Selection([('1', u'Принято к исполнению'), ('2', u'Обжалование и отмена'),
                                              ('3', u'Обжалование и выполнение'),], default="1",
@@ -260,7 +260,7 @@ class Pid(models.Model):
     postanovlenie_iskodex_3 = fields.Integer(u"п. №")
     postanovlenie_iskodex_4 = fields.Integer(u"пп. №")
     postanovlenie_iskodex_5 = fields.Date(u"Дата возбуждения дела об административном правонарушении")
-    postanovlenie_iskodex_6 = fields.Float(u"Сумма взыскания")
+    postanovlenie_iskodex_6 = fields.Float(u"Сумма взыскания, тыс.руб.", digits=(10, 3))
 
     postanovlenie_notkodex_kind = fields.Selection(
         [
@@ -275,7 +275,7 @@ class Pid(models.Model):
     postanovlenie_notkodex_num = fields.Char(u"Номер")
     postanovlenie_notkodex_name = fields.Char(u"Наименование")
     postanovlenie_notkodex_date = fields.Date(u"Дата")
-    postanovlenie_notkodex_summa = fields.Float(u"Сумма взыскания")
+    postanovlenie_notkodex_summa = fields.Float(u"Сумма взыскания, тыс.руб.", digits=(10, 3))
 
     #postanovlenie_descr_easd = fields.Text(u"ЕАСД ОАО 'РЖД'")
     postanovlenie_num_easd = fields.Char(u"Номер")
@@ -377,12 +377,56 @@ class Pid(models.Model):
     ##############################################################################################################
     @api.multi
     def do_print_xlsx(self, workbook):
-        raise exceptions.Warning(u"Находится в доработке")
+        #raise exceptions.Warning(u"Находится в доработке")
         worksheet = workbook.add_worksheet(u'Штрафы')
         worksheet.set_column(0, tab1_width - 1, cell_width)
         r = tab1_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах юридическим лицам')
         r, col_widths = table_1_head(workbook, worksheet, r)
         r = table_1_body(workbook, worksheet, r, get_report_data_from_record(self), col_widths)
+    
+    @api.constrains('protokol_iskodex_6', 'protokol_notkodex_summa')
+    @api.multi
+    def _check_protokol(self):
+        for rec in self:
+            sum1 = sum(rec.v1_01.mapped('summa3'))
+            if rec.protokol_zakon != 'other':
+                if rec.protokol_iskodex_6 < sum1:
+                    raise exceptions.ValidationError(u"Сумма взыскания в протоколе (%s) не должна быть меньше суммы по предприятиям (%s)" % (rec.protokol_iskodex_6, sum1))
+            else:
+                if rec.protokol_notkodex_summa < sum1:
+                    raise exceptions.ValidationError(u"Сумма взыскания в протоколе (%s) не должна быть меньше суммы по предприятиям (%s)" % (rec.protokol_notkodex_summa, sum1))
+    
+    @api.constrains('postanovlenie_iskodex_6', 'postanovlenie_notkodex_summa')
+    @api.multi
+    def _check_postanovlenie(self):
+        for rec in self:
+            sum1 = sum(rec.v1_01.mapped('summa4'))
+            if rec.postanovlenie_zakon != 'other':
+                if rec.postanovlenie_iskodex_6 < sum1:
+                    raise exceptions.ValidationError(u"Сумма взыскания в постановлении (%s) не должна быть меньше суммы по предприятиям (%s)" % (rec.postanovlenie_iskodex_6, sum1))
+            else:
+                if rec.postanovlenie_notkodex_summa < sum1:
+                    raise exceptions.ValidationError(u"Сумма взыскания в постановлении (%s) не должна быть меньше суммы по предприятиям (%s)" % (rec.postanovlenie_notkodex_summa, sum1))
+    
+    @api.onchange('protokol_iskodex_6', 'protokol_notkodex_summa')
+    def _onchange_protokol(self):
+        sum1 = sum(self.v1_01.mapped('summa3'))
+        if self.protokol_zakon != 'other':
+            if self.protokol_iskodex_6 < sum1:
+                raise exceptions.ValidationError(u"Сумма взыскания в протоколе (%s) не должна быть меньше суммы по предприятиям (%s)" % (self.protokol_iskodex_6, sum1))
+        else:
+            if self.protokol_notkodex_summa < sum1:
+                raise exceptions.ValidationError(u"Сумма взыскания в протоколе (%s) не должна быть меньше суммы по предприятиям (%s)" % (self.protokol_notkodex_summa, sum1))
+    
+    @api.onchange('postanovlenie_iskodex_6', 'postanovlenie_notkodex_summa')
+    def _onchange_postanovlenie(self):
+        sum1 = sum(self.v1_01.mapped('summa4'))
+        if self.postanovlenie_zakon != 'other':
+            if self.postanovlenie_iskodex_6 < sum1:
+                raise exceptions.ValidationError(u"Сумма взыскания в постановлении (%s) не должна быть меньше суммы по предприятиям (%s)" % (self.postanovlenie_iskodex_6, sum1))
+        else:
+            if self.postanovlenie_notkodex_summa < sum1:
+                raise exceptions.ValidationError(u"Сумма взыскания в постановлении (%s) не должна быть меньше суммы по предприятиям (%s)" % (self.postanovlenie_notkodex_summa, sum1))
 
 
 ##############################################################################################################
@@ -420,8 +464,8 @@ class PredPoligon(models.Model):
         default = lambda self: self.env.user.department_id,   # при создании нету self-а в текущем контексте
     )
     rel_railway_id = fields.Many2one(related="department_id.rel_railway_id", readonly=True)
-    summa3 = fields.Float(u"Сумма", digits=(10,3))
-    summa4 = fields.Float(u"Сумма", digits=(10,3))
+    summa3 = fields.Float(u"Сумма, тыс.руб.", digits=(10,3))
+    summa4 = fields.Float(u"Сумма, тыс.руб.", digits=(10,3))
 
 
 class Problem(models.Model):

@@ -322,7 +322,7 @@
                                     </group>
                                     <group colspan="1">
                                         <field name="postanovlenie_iskodex_5" attrs="{'readonly': [('tab4_done','=',True)]}"/>
-                                        <span style="font-weight: bold !important;">Сумма взыскания</span>
+                                        <span style="font-weight: bold !important;">Сумма взыскания, тыс.руб.</span>
                                         <span>
                                             <field name="postanovlenie_iskodex_6" nolabel="1" attrs="{'readonly': [('tab4_done','=',True)]}" style="width:auto"/>
                                             <field name="question_mark_predpisanie_summa" nolabel="1" class="help_mark_left"/>
