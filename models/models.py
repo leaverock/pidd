@@ -383,7 +383,12 @@ class Pid(models.Model):
         r = tab1_str(workbook, worksheet, 0, u'Информация о предъявленных административных штрафах юридическим лицам')
         r, col_widths = table_1_head(workbook, worksheet, r)
         r = table_1_body(workbook, worksheet, r, get_report_data_from_record(self), col_widths)
-    
+
+    ##############################################################################################################
+    #
+    #  Проверка сумм для списка предприятий
+    #
+    ##############################################################################################################
     @api.constrains('protokol_iskodex_6', 'protokol_notkodex_summa')
     @api.multi
     def _check_protokol(self):
