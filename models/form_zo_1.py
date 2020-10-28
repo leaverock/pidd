@@ -109,3 +109,13 @@ class FormZO1(models.Model):
             self.diff_pid_sum_not_san = 0
             self.diff_sud_sum_san = 0
             self.diff_sud_sum_not_san = 0
+
+    @api.multi
+    def write(self, new_vals):
+        res = super(FormZO1, self).write(new_vals)
+        return res
+
+    @api.model
+    def create(self, vals):
+        res = super(FormZO1, self).create(vals)
+        return res
